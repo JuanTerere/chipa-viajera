@@ -234,35 +234,45 @@
 
 <script>
     // ══════════════════════════════════════════════════════
-    //  LEE LOS PARÁMETROS DE LA URL
-    //  index.html los manda así:
-    //    ?postal=id_imagen  &para=Nombre  &de=QuienEnvia  &msg=Mensaje
+    //  LEE LOS DATOS DESDE EL PARÁMETRO ?d= (Base64 JSON)
+    //  index.html empaqueta todo en un solo parámetro Base64
+    //  para que WhatsApp no corte la URL por los & internos.
     // ══════════════════════════════════════════════════════
-    const params   = new URLSearchParams(window.location.search);
-    const idPostal = params.get('postal') || '';
-    const para     = params.get('para')   || '';
-    const de       = params.get('de')     || '';
-    const mensaje  = params.get('msg')    || '';
     const urlActual = window.location.href;
+    let idPostal = '', para = '', de = '', mensaje = '';
+
+    try {
+        const raw = new URLSearchParams(window.location.search).get('d') || '';
+        if (raw) {
+            const datos = JSON.parse(decodeURIComponent(escape(atob(raw))));
+            idPostal = datos.postal || '';
+            para     = datos.para   || '';
+            de       = datos.de     || '';
+            mensaje  = datos.msg    || '';
+        }
+    } catch(e) {
+        // Si falla el decode, los valores quedan vacíos y se muestran los placeholders
+        console.warn('No se pudieron leer los datos de la URL:', e);
+    }
 
     // ── IMAGEN ──────────────────────────────────────────
     const imgEl = document.getElementById('img-postal');
     if (idPostal) {
-        const rutaImg   = `imagenes/${idPostal}.jpg`;
-        const fallback  = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
+        const rutaImg  = 'imagenes/' + idPostal + '.jpg';
+        const fallback = 'https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera';
         imgEl.src = rutaImg;
         imgEl.onerror = function() { this.src = fallback; this.onerror = null; };
         document.getElementById('og-image').setAttribute('content',
-            `https://juanterere.github.io/chipa-viajera/imagenes/${idPostal}.jpg`
+            'https://juanterere.github.io/chipa-viajera/imagenes/' + idPostal + '.jpg'
         );
     } else {
-        imgEl.src = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
+        imgEl.src = 'https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera';
     }
 
     // ── NOMBRE DEL DESTINATARIO ─────────────────────────
     const elPara = document.getElementById('texto-para');
     if (para) {
-        elPara.textContent = `¡Hola, ${para}!`;
+        elPara.textContent = '¡Hola, ' + para + '!';
     } else {
         elPara.textContent = '¡Hola!';
         elPara.style.color = '#bbb';
@@ -281,35 +291,34 @@
     // ── FIRMA ────────────────────────────────────────────
     const elFirma = document.getElementById('texto-firma');
     if (de) {
-        elFirma.textContent = `— Con cariño, ${de} 💛`;
+        elFirma.textContent = '— Con cariño, ' + de + ' 💛';
     }
 
     // ── TÍTULO DE LA PÁGINA ──────────────────────────────
     const tituloPagina = para
-        ? `¡${para}, te llegó una postal de La Chipa Viajera! ✈️`
-        : `¡Te llegó una postal de La Chipa Viajera! ✈️`;
+        ? '¡' + para + ', te llegó una postal de La Chipa Viajera! ✈️'
+        : '¡Te llegó una postal de La Chipa Viajera! ✈️';
     document.title = tituloPagina;
 
-    // ── OPEN GRAPH (para Facebook; WhatsApp lo lee del servidor) ──
+    // ── OPEN GRAPH ───────────────────────────────────────
     document.getElementById('og-title').setAttribute('content', tituloPagina);
     document.getElementById('og-url').setAttribute('content', urlActual);
     if (mensaje) {
-        const desc = `"${mensaje.substring(0, 120)}${mensaje.length > 120 ? '…' : ''}"`;
+        const desc = '"' + mensaje.substring(0, 120) + (mensaje.length > 120 ? '…' : '') + '"';
         document.getElementById('og-description').setAttribute('content', desc);
     }
 
     // ══════════════════════════════════════════════════════
-    //  COMPARTIR POR WHATSAPP
+    //  COMPARTIR POR WHATSAPP (reenviar la misma URL)
     // ══════════════════════════════════════════════════════
     function compartirWhatsApp() {
-        const nombrePara = para ? `*${para}*` : 'alguien especial';
-        const firmaTxt   = de   ? ` — *${de}*` : '';
+        const nombrePara = para ? '*' + para + '*' : 'alguien especial';
         const texto =
-            `✈️🧀 *¡Llegó una postal de La Chipa Viajera!*%0A%0A` +
-            `Le mandé esta postal a ${nombrePara}${encodeURIComponent(firmaTxt)}:%0A%0A` +
-            `_"${encodeURIComponent(mensaje || '')}"_%0A%0A` +
-            `👉 Mirala acá: ${encodeURIComponent(urlActual)}`;
-        window.open(`https://wa.me/?text=${texto}`, '_blank');
+            '✈️🧀 *¡Llegó una postal de La Chipa Viajera!*%0A%0A' +
+            'Le mandé esta postal a ' + nombrePara + ':%0A%0A' +
+            (mensaje ? '_"' + encodeURIComponent(mensaje) + '"_%0A%0A' : '') +
+            '👉 Mirala acá: ' + encodeURIComponent(urlActual);
+        window.open('https://wa.me/?text=' + texto, '_blank');
     }
 
     // ══════════════════════════════════════════════════════
