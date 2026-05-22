@@ -542,16 +542,27 @@
 
         const { para, de, mensaje } = datos;
 
-        const urlPostal = `${URL_BASE}/ver.html?postal=${postalSeleccionada}&para=${encodeURIComponent(para)}&de=${encodeURIComponent(de)}&msg=${encodeURIComponent(mensaje)}`;
+        // ── Armamos la URL de la postal con todos los datos ──
+        // encodeURIComponent en CADA parámetro para que tildes y
+        // caracteres especiales no rompan la URL al viajar por WhatsApp
+        const urlPostal =
+            URL_BASE + '/ver.html' +
+            '?postal=' + encodeURIComponent(postalSeleccionada) +
+            '&para='   + encodeURIComponent(para) +
+            '&de='     + encodeURIComponent(de) +
+            '&msg='    + encodeURIComponent(mensaje);
 
-        const firma = de ? ` — con cariño, *${de}* 💛` : "";
+        // ── Texto del mensaje de WhatsApp ──
+        // La URL completa va encodeURIComponent() para que WhatsApp
+        // no confunda sus & con los del texto del mensaje
+        const firma = de ? '%0A%0A— Con cariño, *' + de + '* 💛' : '';
         const textoWA =
-            `¡Hola *${para}*! 👋✈️%0A%0A` +
-            `Te llegó una postal personalizada de *La Chipa Viajera* en su recorrido por el mundo.%0A%0A` +
-            `_"${mensaje}"_${encodeURIComponent(firma)}%0A%0A` +
-            `👉 Mirá tu postal acá:%0A${urlPostal}`;
+            '¡Hola *' + para + '*! 👋✈️%0A%0A' +
+            'Te llegó una postal personalizada de *La Chipa Viajera* desde el mundo.%0A%0A' +
+            '_"' + encodeURIComponent(mensaje) + '"_' + firma + '%0A%0A' +
+            '👉 Mirá tu postal acá:%0A' + encodeURIComponent(urlPostal);
 
-        window.open(`https://wa.me/?text=${textoWA}`, '_blank');
+        window.open('https://wa.me/?text=' + textoWA, '_blank');
     }
 
     // ══════════════════════════════════════════════════════
