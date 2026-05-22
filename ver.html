@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ══════════════════════════════════════════════════════
-         OPEN GRAPH — Vista previa en WhatsApp y Facebook
-         Estos tags se actualizan dinámicamente con JS abajo
-    ══════════════════════════════════════════════════════ -->
+    <!-- Open Graph para vista previa en WhatsApp y Facebook -->
     <meta property="og:type"        content="website">
     <meta property="og:site_name"   content="La Chipa Viajera">
     <meta property="og:title"       id="og-title"       content="¡Te llegó una postal de La Chipa Viajera! ✈️🧀">
     <meta property="og:description" id="og-description" content="Alguien te mandó una postal personalizada desde el mundo. ¡Entrá a verla!">
     <meta property="og:image"       id="og-image"       content="https://juanterere.github.io/chipa-viajera/imagenes/og-preview.jpg">
     <meta property="og:url"         id="og-url"         content="">
-    <!-- WhatsApp usa og:image, mínimo 300x300px. Subí una imagen llamada og-preview.jpg a /imagenes/ -->
 
     <title>Tu postal de La Chipa Viajera ✈️</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -49,15 +45,12 @@
             color: var(--texto);
         }
 
-        /* ── TARJETA PRINCIPAL ── */
         .postal-card {
             max-width: 520px;
             width: 100%;
             background: white;
             border-radius: 28px;
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.13),
-                0 4px 16px rgba(0,0,0,0.07);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.13), 0 4px 16px rgba(0,0,0,0.07);
             overflow: hidden;
             animation: aparecerCard 0.6s cubic-bezier(0.22,1,0.36,1) both;
         }
@@ -67,207 +60,128 @@
             to   { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* ── IMAGEN GRANDE ── */
-        .postal-imagen-wrap {
-            position: relative;
-            background: #f3f0e8;
-        }
-
+        /* IMAGEN — sin max-height para verse completa */
+        .postal-imagen-wrap { position: relative; background: #f3f0e8; }
         .postal-imagen {
             width: 100%;
-            display: block;
-            /* Sin max-height: se ve completa en su proporción original */
             height: auto;
+            display: block;
             object-fit: contain;
             background: #f3f0e8;
         }
 
-        /* SELLO DECORATIVO */
         .sello {
             position: absolute;
-            top: 14px;
-            right: 14px;
+            top: 14px; right: 14px;
             background: var(--dorado);
             color: white;
             font-family: 'Playfair Display', serif;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            padding: 6px 10px;
-            border-radius: 6px;
+            font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 6px 10px; border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            line-height: 1.4;
-            text-align: center;
+            line-height: 1.4; text-align: center;
             animation: aparecerSello 0.4s 0.5s ease both;
         }
-
         @keyframes aparecerSello {
             from { opacity: 0; transform: scale(0.6) rotate(-5deg); }
             to   { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
-        /* ── CUERPO DEL MENSAJE ── */
-        .postal-cuerpo {
-            padding: 24px 24px 20px;
-        }
+        /* CUERPO */
+        .postal-cuerpo { padding: 24px 24px 20px; }
 
         .chipa-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            padding-bottom: 16px;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 18px; padding-bottom: 16px;
             border-bottom: 2px dashed var(--crema-oscuro);
         }
-
         .chipa-avatar {
-            width: 54px;
-            max-width: 54px;
-            height: 54px;
-            max-height: 54px;
-            object-fit: contain;
-            flex-shrink: 0;
+            width: 54px; max-width: 54px;
+            height: 54px; max-height: 54px;
+            object-fit: contain; flex-shrink: 0;
             filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
         }
-
         .chipa-header-texto h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: var(--dorado);
-            margin-bottom: 2px;
+            font-size: 16px; color: var(--dorado); margin-bottom: 2px;
         }
-
-        .chipa-header-texto p {
-            font-size: 12px;
-            color: var(--texto-suave);
-        }
+        .chipa-header-texto p { font-size: 12px; color: var(--texto-suave); }
 
         .label-postal {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--texto-suave);
-            margin-bottom: 5px;
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--texto-suave); margin-bottom: 5px;
         }
-
         .destinatario {
             font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            color: var(--texto);
-            margin-bottom: 14px;
-            line-height: 1.2;
+            font-size: 26px; color: var(--texto);
+            margin-bottom: 14px; line-height: 1.2;
         }
 
         .burbuja-mensaje {
             background: var(--crema);
             border-left: 4px solid var(--dorado);
             border-radius: 0 14px 14px 0;
-            padding: 14px 18px;
-            margin-bottom: 14px;
+            padding: 14px 18px; margin-bottom: 14px;
         }
-
         .burbuja-mensaje p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: var(--texto);
-            font-style: italic;
+            font-size: 15px; line-height: 1.7;
+            color: var(--texto); font-style: italic;
         }
 
         .firma {
-            font-size: 13px;
-            color: var(--texto-suave);
-            text-align: right;
-            font-weight: 700;
+            font-size: 14px; color: var(--texto-suave);
+            text-align: right; font-weight: 700;
+            margin-top: 4px;
         }
 
-        /* ── FOOTER BOTONES ── */
+        /* BOTONES */
         .postal-footer {
             background: var(--crema);
             border-top: 2px solid var(--crema-oscuro);
             padding: 18px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: flex; flex-direction: column; gap: 10px;
         }
-
-        /* Fila WhatsApp + Facebook */
-        .fila-compartir {
-            display: flex;
-            gap: 10px;
-        }
+        .fila-compartir { display: flex; gap: 10px; }
 
         .btn-wa {
-            flex: 1;
-            padding: 13px 10px;
-            background: var(--verde-wa);
-            color: white;
-            border: none;
-            border-radius: 12px;
+            flex: 1; padding: 13px 10px;
+            background: var(--verde-wa); color: white;
+            border: none; border-radius: 12px;
             font-family: 'Nunito', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
             box-shadow: 0 4px 12px rgba(37,211,102,0.3);
             transition: all 0.2s;
         }
-
-        .btn-wa:hover {
-            background: var(--verde-wa-oscuro);
-            transform: translateY(-1px);
-        }
+        .btn-wa:hover { background: var(--verde-wa-oscuro); transform: translateY(-1px); }
 
         .btn-fb {
-            flex: 1;
-            padding: 13px 10px;
-            background: var(--azul-fb);
-            color: white;
-            border: none;
-            border-radius: 12px;
+            flex: 1; padding: 13px 10px;
+            background: var(--azul-fb); color: white;
+            border: none; border-radius: 12px;
             font-family: 'Nunito', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
             box-shadow: 0 4px 12px rgba(24,119,242,0.3);
             transition: all 0.2s;
         }
-
-        .btn-fb:hover {
-            background: var(--azul-fb-oscuro);
-            transform: translateY(-1px);
-        }
+        .btn-fb:hover { background: var(--azul-fb-oscuro); transform: translateY(-1px); }
 
         .btn-crear {
-            width: 100%;
-            padding: 13px;
-            background: white;
-            color: var(--dorado);
-            border: 2px solid var(--dorado);
-            border-radius: 12px;
+            width: 100%; padding: 13px;
+            background: white; color: var(--dorado);
+            border: 2px solid var(--dorado); border-radius: 12px;
             font-family: 'Nunito', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
+            font-size: 14px; font-weight: 700; cursor: pointer;
             transition: all 0.2s;
         }
-
         .btn-crear:hover { background: var(--dorado-claro); }
 
         footer {
-            margin-top: 18px;
-            font-size: 12px;
-            color: var(--texto-suave);
-            text-align: center;
-            opacity: 0.7;
+            margin-top: 18px; font-size: 12px;
+            color: var(--texto-suave); text-align: center; opacity: 0.7;
         }
     </style>
 </head>
@@ -275,13 +189,11 @@
 
 <div class="postal-card">
 
-    <!-- Imagen de la postal — sin max-height para que se vea completa -->
     <div class="postal-imagen-wrap">
         <img id="img-postal" class="postal-imagen" src="" alt="Postal de La Chipa Viajera">
         <div class="sello">La Chipa<br>Viajera ✈️</div>
     </div>
 
-    <!-- Cuerpo del mensaje -->
     <div class="postal-cuerpo">
 
         <div class="chipa-header">
@@ -298,29 +210,22 @@
         </div>
 
         <div class="label-postal">Para:</div>
-        <div class="destinatario" id="texto-para">¡Hola, viajero/a!</div>
+        <div class="destinatario" id="texto-para"></div>
 
         <div class="burbuja-mensaje">
-            <p id="texto-mensaje">¡La Chipa Viajera te manda todo su cariño desde el mundo! 🌍</p>
+            <p id="texto-mensaje"></p>
         </div>
 
         <div class="firma" id="texto-firma"></div>
 
     </div>
 
-    <!-- Botones -->
     <div class="postal-footer">
         <div class="fila-compartir">
-            <button class="btn-wa" onclick="compartirWhatsApp()">
-                📤 WhatsApp
-            </button>
-            <button class="btn-fb" onclick="compartirFacebook()">
-                👍 Facebook
-            </button>
+            <button class="btn-wa" onclick="compartirWhatsApp()">📤 WhatsApp</button>
+            <button class="btn-fb" onclick="compartirFacebook()">👍 Facebook</button>
         </div>
-        <button class="btn-crear" onclick="irACrear()">
-            🌍 Crear mi propia postal
-        </button>
+        <button class="btn-crear" onclick="irACrear()">🌍 Crear mi propia postal</button>
     </div>
 
 </div>
@@ -329,65 +234,81 @@
 
 <script>
     // ══════════════════════════════════════════════════════
-    //  Lee parámetros de la URL
+    //  LEE LOS PARÁMETROS DE LA URL
+    //  index.html los manda así:
+    //    ?postal=id_imagen  &para=Nombre  &de=QuienEnvia  &msg=Mensaje
     // ══════════════════════════════════════════════════════
-    const params  = new URLSearchParams(window.location.search);
+    const params   = new URLSearchParams(window.location.search);
     const idPostal = params.get('postal') || '';
     const para     = params.get('para')   || '';
     const de       = params.get('de')     || '';
     const mensaje  = params.get('msg')    || '';
     const urlActual = window.location.href;
 
-    // ── Imagen ──
+    // ── IMAGEN ──────────────────────────────────────────
+    const imgEl = document.getElementById('img-postal');
     if (idPostal) {
-        const imgEl = document.getElementById('img-postal');
-        const rutaImg = `imagenes/${idPostal}.jpg`;
-        const placeholder = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
+        const rutaImg   = `imagenes/${idPostal}.jpg`;
+        const fallback  = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
         imgEl.src = rutaImg;
-        imgEl.onerror = function() { this.src = placeholder; };
-
-        // Open Graph: imagen de la postal para la vista previa
+        imgEl.onerror = function() { this.src = fallback; this.onerror = null; };
         document.getElementById('og-image').setAttribute('content',
             `https://juanterere.github.io/chipa-viajera/imagenes/${idPostal}.jpg`
         );
+    } else {
+        imgEl.src = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
     }
 
-    // ── Destinatario ──
-    const saludoPara = para ? `¡Hola, ${para}!` : '¡Hola, viajero/a!';
-    document.getElementById('texto-para').textContent = saludoPara;
+    // ── NOMBRE DEL DESTINATARIO ─────────────────────────
+    const elPara = document.getElementById('texto-para');
+    if (para) {
+        elPara.textContent = `¡Hola, ${para}!`;
+    } else {
+        elPara.textContent = '¡Hola!';
+        elPara.style.color = '#bbb';
+    }
 
-    // ── Mensaje ──
-    const textoMensaje = mensaje || '¡La Chipa Viajera te manda todo su cariño desde el mundo! 🌍';
-    document.getElementById('texto-mensaje').textContent = textoMensaje;
+    // ── MENSAJE ─────────────────────────────────────────
+    const elMensaje = document.getElementById('texto-mensaje');
+    if (mensaje) {
+        elMensaje.textContent = mensaje;
+    } else {
+        elMensaje.textContent = '(Aquí aparecerá el mensaje personalizado)';
+        elMensaje.style.color = '#bbb';
+        elMensaje.style.fontStyle = 'normal';
+    }
 
-    // ── Firma ──
+    // ── FIRMA ────────────────────────────────────────────
+    const elFirma = document.getElementById('texto-firma');
     if (de) {
-        document.getElementById('texto-firma').textContent = `— Con cariño, ${de} 💛`;
+        elFirma.textContent = `— Con cariño, ${de} 💛`;
     }
 
-    // ── Open Graph dinámico (título y descripción para WhatsApp/Facebook) ──
-    const ogTitulo = para
-        ? `¡${para}, te llegó una postal de La Chipa Viajera! ✈️🧀`
-        : `¡Te llegó una postal de La Chipa Viajera! ✈️🧀`;
+    // ── TÍTULO DE LA PÁGINA ──────────────────────────────
+    const tituloPagina = para
+        ? `¡${para}, te llegó una postal de La Chipa Viajera! ✈️`
+        : `¡Te llegó una postal de La Chipa Viajera! ✈️`;
+    document.title = tituloPagina;
 
-    const ogDesc = mensaje
-        ? `"${mensaje.substring(0, 100)}${mensaje.length > 100 ? '…' : ''}" — Entrá a ver tu postal ilustrada.`
-        : 'Alguien te mandó una postal personalizada desde el mundo. ¡Entrá a verla!';
-
-    document.getElementById('og-title').setAttribute('content', ogTitulo);
-    document.getElementById('og-description').setAttribute('content', ogDesc);
+    // ── OPEN GRAPH (para Facebook; WhatsApp lo lee del servidor) ──
+    document.getElementById('og-title').setAttribute('content', tituloPagina);
     document.getElementById('og-url').setAttribute('content', urlActual);
-    document.title = ogTitulo;
+    if (mensaje) {
+        const desc = `"${mensaje.substring(0, 120)}${mensaje.length > 120 ? '…' : ''}"`;
+        document.getElementById('og-description').setAttribute('content', desc);
+    }
 
     // ══════════════════════════════════════════════════════
     //  COMPARTIR POR WHATSAPP
     // ══════════════════════════════════════════════════════
     function compartirWhatsApp() {
         const nombrePara = para ? `*${para}*` : 'alguien especial';
+        const firmaTxt   = de   ? ` — *${de}*` : '';
         const texto =
             `✈️🧀 *¡Llegó una postal de La Chipa Viajera!*%0A%0A` +
-            `Le mandé una postal personalizada a ${nombrePara}.%0A%0A` +
-            `👉 Mirala acá: ${urlActual}`;
+            `Le mandé esta postal a ${nombrePara}${encodeURIComponent(firmaTxt)}:%0A%0A` +
+            `_"${encodeURIComponent(mensaje || '')}"_%0A%0A` +
+            `👉 Mirala acá: ${encodeURIComponent(urlActual)}`;
         window.open(`https://wa.me/?text=${texto}`, '_blank');
     }
 
@@ -395,12 +316,12 @@
     //  COMPARTIR EN FACEBOOK
     // ══════════════════════════════════════════════════════
     function compartirFacebook() {
-        const urlFB = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlActual)}`;
-        window.open(urlFB, '_blank', 'width=600,height=400');
+        const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlActual)}`;
+        window.open(url, '_blank', 'width=600,height=400');
     }
 
     // ══════════════════════════════════════════════════════
-    //  IR A CREAR UNA POSTAL NUEVA
+    //  CREAR NUEVA POSTAL
     // ══════════════════════════════════════════════════════
     function irACrear() {
         window.location.href = 'index.html';
