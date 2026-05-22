@@ -51,7 +51,7 @@ HTML
 <div class="container">
 
     <div id="bloque-seleccion">
-        <img src="imagenes/Chipa Viajera con maletas1.jpg" alt="La Chipa Viajera" class="Chipa-presentacion" onerror="this.src='https://placehold.co/200x200?text=Chipa+Viajera+Imagen+Faltante'">
+        <img src="imagenes/Chipa Viajera con maletas1.png" alt="La Chipa Viajera" class="chipa-logo">
         <h1>Envía una postal de la Chipa Viajera.</h1>
         <p class="bajada">Hace que la Chipa Viajera lleve tu saludo a cualquier parte del mundo.</p>
 
@@ -158,10 +158,9 @@ HTML
         window.open(`https://wa.me/?text=${textoWhatsApp}`, '_blank');
     }
 
-    function probarPostalLocal() {
-        const nombre = document.getElementById('nombre').value;
-        const mensaje = document.getElementById('mensaje').value;
-
+    Vista Previa Corregido -->
+<button type="button" onclick="probarVista()" class="btn-preview">👁️ Así quedaría esta postal</button>
+    
         if (!nombre || !mensaje) {
             alert("¡Por favor, completá los campos para la simulación!");
             return;
