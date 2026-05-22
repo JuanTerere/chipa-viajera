@@ -1,0 +1,175 @@
+HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Chipa Viajera - Postales del Mundo</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4edd2; text-align: center; padding: 20px; color: #333; margin: 0; }
+        .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        
+        /* IMAGEN DE PRESENTACIÓN CORREGIDA */
+        .Chipa-presentacion { width: 220px; height: auto; margin: 15px auto; display: block; filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2)); object-fit: contain; }
+        
+        h1 { color: #d97706; font-size: 26px; margin-bottom: 5px; font-weight: bold; }
+        p.bajada { color: #666; font-size: 15px; margin-bottom: 25px; line-height: 1.4; }
+        h3 { text-align: left; color: #d97706; margin: 20px 0 10px 0; font-size: 16px; border-bottom: 2px solid #f4edd2; padding-bottom: 5px; }
+        
+        /* PASO 1: Selección de País */
+        .menu-paises { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .btn-pais { padding: 12px 20px; font-size: 16px; font-weight: bold; border: 2px solid #ccc; border-radius: 10px; background: #fafafa; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-pais:hover { background: #eee; border-color: #999; }
+        .btn-pais.activo { background: #d97706; color: white; border-color: #b45309; }
+
+        /* PASO 2: GALERÍA CORREGIDA PARA VER LA POSTAL ENTERA */
+        .galeria-postales { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+        .tarjeta-postal { border: 2px solid #ccc; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.3s; background: #fafafa; }
+        .tarjeta-postal img { width: 100%; display: block; height: 130px; object-fit: contain; background-color: #f3f4f6; }
+        .tarjeta-postal p { margin: 8px 0; font-size: 13px; font-weight: bold; color: #444; padding: 0 5px; }
+        .tarjeta-postal:hover { border-color: #d97706; }
+
+        /* PASO 3: EN GRANDE */
+        .postal-en-grande { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 15px; }
+        .btn-volver { background: none; border: none; color: #666; font-size: 14px; cursor: pointer; font-weight: bold; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; float: left; }
+        .btn-volver:hover { color: #d97706; }
+
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 2px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        input:focus, textarea:focus { border-color: #d97706; outline: none; }
+        
+        button.btn-whatsapp { width: 100%; padding: 15px; background-color: #25D366; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        button.btn-whatsapp:hover { background-color: #128C7E; }
+        
+        button.btn-preview-local { width: 100%; padding: 12px; background-color: #4b5563; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        button.btn-preview-local:hover { background-color: #374151; }
+        
+        .oculto { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="bloque-seleccion">
+        <img src="imagenes/Chipa Viajera con maletas1.jpg" alt="La Chipa Viajera" class="Chipa-presentacion" onerror="this.src='https://placehold.co/200x200?text=Chipa+Viajera+Imagen+Faltante'">
+        <h1>Envía una postal de la Chipa Viajera.</h1>
+        <p class="bajada">Hace que la Chipa Viajera lleve tu saludo a cualquier parte del mundo.</p>
+
+        <h3>Seleccioná desde qué país querés que envíe el saludo:</h3>
+        <div class="menu-paises">
+            <button type="button" class="btn-pais" id="pais-francia" onclick="cargarAlbumPais('francia')">Francia 🇫🇷</button>
+            <button type="button" class="btn-pais" id="pais-espana" onclick="cargarAlbumPais('espana')">España 🇪🇸</button>
+        </div>
+
+        <div id="seccion-album" class="oculto">
+            <h3>Seleccioná el lugar icónico de tu postal:</h3>
+            <div class="galeria-postales" id="contenedor-postales"></div>
+        </div>
+    </div>
+
+    <div id="bloque-personalizar" class="oculto">
+        <button type="button" class="btn-volver" onclick="volverAlCatalogo()">⬅️ Cambiar de postal</button>
+        <div style="clear: both;"></div>
+        
+        <h3>¡Hermosa elección! Personalizá tu dedicatoria abajo:</h3>
+        <img id="vista-postal-grande" src="" class="postal-en-grande" alt="Postal Seleccionada">
+
+        <input type="text" id="nombre" placeholder="¿Para quién es? (Ej: Carlos)">
+        <textarea id="mensaje" rows="3" placeholder="Escribí tu mensaje o dedicatoria acá..."></textarea>
+
+        <button type="button" class="btn-whatsapp" onclick="enviarAWhatsAppReal()">🚀 Enviar por WhatsApp</button>
+        <button type="button" class="btn-preview-local" onclick="probarPostalLocal()">✨ Probar vista del destinatario en esta PC</button>
+    </div>
+
+</div>
+
+<script>
+    // URL de producción. La cambiaremos en el paso siguiente cuando GitHub te dé tu link gratis.
+    const URL_DOMINIO_REAL = "https://juanterere.github.io/chipa-viajera"; 
+
+    const albumesPaises = {
+        francia: [
+            { id: "fr_paris_concordia", lugar: "París - Plaza de la Concordia" },
+            { id: "fr_paris_torre", lugar: "París - La Torre Eiffel" },
+            { id: "fr_paris_louvre", lugar: "París - El Museo del Louvre" }
+        ],
+        espana: [
+            { id: "es_madrid_plazamayor", lugar: "Madrid - Plaza Mayor" }
+        ]
+    };
+
+    let paisSeleccionado = "";
+    let idPostalSeleccionada = "";
+
+    function cargarAlbumPais(pais) {
+        paisSeleccionado = pais;
+        document.querySelectorAll('.btn-pais').forEach(btn => btn.classList.remove('activo'));
+        document.getElementById(`pais-${pais}`).classList.add('activo');
+
+        const contenedor = document.getElementById('contenedor-postales');
+        contenedor.innerHTML = "";
+        
+        const postales = albumesPaises[pais];
+        postales.forEach(postal => {
+            const rutaImg = `imagenes/${postal.id}.jpg`;
+            const placeholderImg = `https://placehold.co/500x300?text=${encodeURIComponent(postal.lugar)}`;
+            
+            contenedor.innerHTML += `
+                <div class="tarjeta-postal" onclick="seleccionarPostal('${postal.id}', '${rutaImg}', '${placeholderImg}')">
+                    <img src="${rutaImg}" onerror="this.src='${placeholderImg}'">
+                    <p>${postal.lugar}</p>
+                </div>
+            `;
+        });
+        document.getElementById('seccion-album').classList.remove('oculto');
+    }
+
+    function seleccionarPostal(idPostal, rutaImg, placeholderImg) {
+        idPostalSeleccionada = idPostal;
+        const imgGrande = document.getElementById('vista-postal-grande');
+        imgGrande.src = rutaImg;
+        imgGrande.onerror = function() { this.src = placeholderImg; };
+
+        document.getElementById('bloque-seleccion').classList.add('oculto');
+        document.getElementById('bloque-personalizar').classList.remove('oculto');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function volverAlCatalogo() {
+        document.getElementById('bloque-personalizar').classList.add('oculto');
+        document.getElementById('bloque-seleccion').classList.remove('oculto');
+    }
+
+    function enviarAWhatsAppReal() {
+        const nombre = document.getElementById('nombre').value;
+        const mensaje = document.getElementById('mensaje').value;
+
+        if (!nombre || !mensaje) {
+            alert("¡Por favor, escribí el nombre y tu mensaje!");
+            return;
+        }
+
+        const urlPostalPersonalizada = `${URL_DOMINIO_REAL}/ver.html?postal=${idPostalSeleccionada}&para=${encodeURIComponent(nombre)}&msg=${encodeURIComponent(mensaje)}`;
+        const textoWhatsApp = `¡Hola *${nombre}*! 👋✈️%0A%0A` +
+                              `Te llegó una postal personalizada de *La Chipa Viajera* en su recorrido internacional.%0A%0A` +
+                              `_"${mensaje}"_%0A%0A` +
+                              `👉 Mirá tu postal ilustrada acá:%0A${urlPostalPersonalizada}`;
+
+        window.open(`https://wa.me/?text=${textoWhatsApp}`, '_blank');
+    }
+
+    function probarPostalLocal() {
+        const nombre = document.getElementById('nombre').value;
+        const mensaje = document.getElementById('mensaje').value;
+
+        if (!nombre || !mensaje) {
+            alert("¡Por favor, completá los campos para la simulación!");
+            return;
+        }
+        // Redirección forzada local controlada
+        window.location.href = `ver.html?postal=${idPostalSeleccionada}&para=${encodeURIComponent(nombre)}&msg=${encodeURIComponent(mensaje)}`;
+    }
+</script>
+
+</body>
+</html>
