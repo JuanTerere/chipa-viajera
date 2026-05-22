@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ══════════════════════════════════════════════════════
+         OPEN GRAPH — Vista previa en WhatsApp y Facebook
+         Estos tags se actualizan dinámicamente con JS abajo
+    ══════════════════════════════════════════════════════ -->
+    <meta property="og:type"        content="website">
+    <meta property="og:site_name"   content="La Chipa Viajera">
+    <meta property="og:title"       id="og-title"       content="¡Te llegó una postal de La Chipa Viajera! ✈️🧀">
+    <meta property="og:description" id="og-description" content="Alguien te mandó una postal personalizada desde el mundo. ¡Entrá a verla!">
+    <meta property="og:image"       id="og-image"       content="https://juanterere.github.io/chipa-viajera/imagenes/og-preview.jpg">
+    <meta property="og:url"         id="og-url"         content="">
+    <!-- WhatsApp usa og:image, mínimo 300x300px. Subí una imagen llamada og-preview.jpg a /imagenes/ -->
+
     <title>Tu postal de La Chipa Viajera ✈️</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,6 +28,8 @@
             --texto-suave: #7a6a55;
             --verde-wa: #25D366;
             --verde-wa-oscuro: #128C7E;
+            --azul-fb: #1877F2;
+            --azul-fb-oscuro: #1464d8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,8 +44,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 24px 16px;
+            justify-content: flex-start;
+            padding: 24px 16px 40px;
             color: var(--texto);
         }
 
@@ -52,7 +67,7 @@
             to   { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        /* IMAGEN */
+        /* ── IMAGEN GRANDE ── */
         .postal-imagen-wrap {
             position: relative;
             background: #f3f0e8;
@@ -61,7 +76,8 @@
         .postal-imagen {
             width: 100%;
             display: block;
-            max-height: 300px;
+            /* Sin max-height: se ve completa en su proporción original */
+            height: auto;
             object-fit: contain;
             background: #f3f0e8;
         }
@@ -91,18 +107,17 @@
             to   { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
-        /* CUERPO DE LA POSTAL */
+        /* ── CUERPO DEL MENSAJE ── */
         .postal-cuerpo {
-            padding: 28px 28px 24px;
+            padding: 24px 24px 20px;
         }
 
-        /* ENCABEZADO CHIPA */
         .chipa-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 18px;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
             border-bottom: 2px dashed var(--crema-oscuro);
         }
 
@@ -128,21 +143,20 @@
             color: var(--texto-suave);
         }
 
-        /* MENSAJE */
         .label-postal {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--texto-suave);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .destinatario {
             font-family: 'Playfair Display', serif;
             font-size: 26px;
             color: var(--texto);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             line-height: 1.2;
         }
 
@@ -151,7 +165,7 @@
             border-left: 4px solid var(--dorado);
             border-radius: 0 14px 14px 0;
             padding: 14px 18px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .burbuja-mensaje p {
@@ -168,37 +182,67 @@
             font-weight: 700;
         }
 
-        /* FOOTER ACCIONES */
+        /* ── FOOTER BOTONES ── */
         .postal-footer {
             background: var(--crema);
             border-top: 2px solid var(--crema-oscuro);
-            padding: 20px 28px;
+            padding: 18px 24px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .btn-reenviar {
-            width: 100%;
-            padding: 14px;
+        /* Fila WhatsApp + Facebook */
+        .fila-compartir {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-wa {
+            flex: 1;
+            padding: 13px 10px;
             background: var(--verde-wa);
             color: white;
             border: none;
             border-radius: 12px;
             font-family: 'Nunito', sans-serif;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             box-shadow: 0 4px 12px rgba(37,211,102,0.3);
             transition: all 0.2s;
         }
 
-        .btn-reenviar:hover {
+        .btn-wa:hover {
             background: var(--verde-wa-oscuro);
+            transform: translateY(-1px);
+        }
+
+        .btn-fb {
+            flex: 1;
+            padding: 13px 10px;
+            background: var(--azul-fb);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(24,119,242,0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-fb:hover {
+            background: var(--azul-fb-oscuro);
             transform: translateY(-1px);
         }
 
@@ -216,32 +260,10 @@
             transition: all 0.2s;
         }
 
-        .btn-crear:hover {
-            background: var(--dorado-claro);
-        }
+        .btn-crear:hover { background: var(--dorado-claro); }
 
-        /* ESTADO DE ERROR */
-        .error-estado {
-            text-align: center;
-            padding: 40px 28px;
-        }
-
-        .error-estado h2 {
-            font-family: 'Playfair Display', serif;
-            color: var(--dorado);
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .error-estado p {
-            color: var(--texto-suave);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* PIE DE PÁGINA */
         footer {
-            margin-top: 20px;
+            margin-top: 18px;
             font-size: 12px;
             color: var(--texto-suave);
             text-align: center;
@@ -253,14 +275,14 @@
 
 <div class="postal-card">
 
-    <!-- Imagen de la postal -->
+    <!-- Imagen de la postal — sin max-height para que se vea completa -->
     <div class="postal-imagen-wrap">
-        <img id="img-postal" class="postal-imagen" src="" alt="Postal">
+        <img id="img-postal" class="postal-imagen" src="" alt="Postal de La Chipa Viajera">
         <div class="sello">La Chipa<br>Viajera ✈️</div>
     </div>
 
     <!-- Cuerpo del mensaje -->
-    <div class="postal-cuerpo" id="cuerpo-postal">
+    <div class="postal-cuerpo">
 
         <div class="chipa-header">
             <img
@@ -276,86 +298,105 @@
         </div>
 
         <div class="label-postal">Para:</div>
-        <div class="destinatario" id="texto-para">—</div>
+        <div class="destinatario" id="texto-para">¡Hola, viajero/a!</div>
 
         <div class="burbuja-mensaje">
-            <p id="texto-mensaje">...</p>
+            <p id="texto-mensaje">¡La Chipa Viajera te manda todo su cariño desde el mundo! 🌍</p>
         </div>
 
         <div class="firma" id="texto-firma"></div>
 
     </div>
 
-</div>
-
-<!-- Botones de acción -->
-<div class="postal-card" style="margin-top:14px; background:var(--crema); box-shadow:none; border:2px solid var(--crema-oscuro);">
+    <!-- Botones -->
     <div class="postal-footer">
-        <button class="btn-reenviar" onclick="compartirWhatsApp()">
-            📤 Reenviar esta postal por WhatsApp
-        </button>
+        <div class="fila-compartir">
+            <button class="btn-wa" onclick="compartirWhatsApp()">
+                📤 WhatsApp
+            </button>
+            <button class="btn-fb" onclick="compartirFacebook()">
+                👍 Facebook
+            </button>
+        </div>
         <button class="btn-crear" onclick="irACrear()">
             🌍 Crear mi propia postal
         </button>
     </div>
+
 </div>
 
 <footer>La Chipa Viajera · Hecha con 🧀 y mucho cariño</footer>
 
 <script>
     // ══════════════════════════════════════════════════════
-    //  Lee los parámetros de la URL y los muestra
-    //  Parámetros esperados:
-    //    ?postal=id_de_postal
-    //    &para=NombreDestinatario
-    //    &de=NombreRemitente     (opcional)
-    //    &msg=TextoDelMensaje
+    //  Lee parámetros de la URL
     // ══════════════════════════════════════════════════════
-
-    const params = new URLSearchParams(window.location.search);
-
+    const params  = new URLSearchParams(window.location.search);
     const idPostal = params.get('postal') || '';
     const para     = params.get('para')   || '';
     const de       = params.get('de')     || '';
     const mensaje  = params.get('msg')    || '';
+    const urlActual = window.location.href;
 
     // ── Imagen ──
     if (idPostal) {
         const imgEl = document.getElementById('img-postal');
         const rutaImg = `imagenes/${idPostal}.jpg`;
-        const placeholder = `https://placehold.co/520x300/f4edd2/d97706?text=La+Chipa+Viajera`;
+        const placeholder = `https://placehold.co/520x400/f4edd2/d97706?text=La+Chipa+Viajera`;
         imgEl.src = rutaImg;
         imgEl.onerror = function() { this.src = placeholder; };
+
+        // Open Graph: imagen de la postal para la vista previa
+        document.getElementById('og-image').setAttribute('content',
+            `https://juanterere.github.io/chipa-viajera/imagenes/${idPostal}.jpg`
+        );
     }
 
     // ── Destinatario ──
-    if (para) {
-        document.getElementById('texto-para').textContent = `¡Hola, ${para}!`;
-    } else {
-        document.getElementById('texto-para').textContent = '¡Hola, viajero/a!';
-    }
+    const saludoPara = para ? `¡Hola, ${para}!` : '¡Hola, viajero/a!';
+    document.getElementById('texto-para').textContent = saludoPara;
 
     // ── Mensaje ──
-    if (mensaje) {
-        document.getElementById('texto-mensaje').textContent = mensaje;
-    } else {
-        document.getElementById('texto-mensaje').textContent = '¡La Chipa Viajera te manda todo su cariño desde el mundo! 🌍';
-    }
+    const textoMensaje = mensaje || '¡La Chipa Viajera te manda todo su cariño desde el mundo! 🌍';
+    document.getElementById('texto-mensaje').textContent = textoMensaje;
 
     // ── Firma ──
     if (de) {
         document.getElementById('texto-firma').textContent = `— Con cariño, ${de} 💛`;
     }
 
+    // ── Open Graph dinámico (título y descripción para WhatsApp/Facebook) ──
+    const ogTitulo = para
+        ? `¡${para}, te llegó una postal de La Chipa Viajera! ✈️🧀`
+        : `¡Te llegó una postal de La Chipa Viajera! ✈️🧀`;
+
+    const ogDesc = mensaje
+        ? `"${mensaje.substring(0, 100)}${mensaje.length > 100 ? '…' : ''}" — Entrá a ver tu postal ilustrada.`
+        : 'Alguien te mandó una postal personalizada desde el mundo. ¡Entrá a verla!';
+
+    document.getElementById('og-title').setAttribute('content', ogTitulo);
+    document.getElementById('og-description').setAttribute('content', ogDesc);
+    document.getElementById('og-url').setAttribute('content', urlActual);
+    document.title = ogTitulo;
+
     // ══════════════════════════════════════════════════════
-    //  COMPARTIR POR WHATSAPP (reenviar la misma URL)
+    //  COMPARTIR POR WHATSAPP
     // ══════════════════════════════════════════════════════
     function compartirWhatsApp() {
-        const urlActual = window.location.href;
+        const nombrePara = para ? `*${para}*` : 'alguien especial';
         const texto =
-            `¡Mirá esta postal de *La Chipa Viajera* que me llegó! 🌍✈️%0A%0A` +
-            `👉 ${urlActual}`;
+            `✈️🧀 *¡Llegó una postal de La Chipa Viajera!*%0A%0A` +
+            `Le mandé una postal personalizada a ${nombrePara}.%0A%0A` +
+            `👉 Mirala acá: ${urlActual}`;
         window.open(`https://wa.me/?text=${texto}`, '_blank');
+    }
+
+    // ══════════════════════════════════════════════════════
+    //  COMPARTIR EN FACEBOOK
+    // ══════════════════════════════════════════════════════
+    function compartirFacebook() {
+        const urlFB = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlActual)}`;
+        window.open(urlFB, '_blank', 'width=600,height=400');
     }
 
     // ══════════════════════════════════════════════════════
