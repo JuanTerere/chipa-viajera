@@ -9,7 +9,7 @@
     <meta property="og:description" id="og-description" content="Alguien te mando una postal personalizada desde el mundo. Entra a verla.">
     <meta property="og:image"       id="og-image"       content="https://juanterere.github.io/chipa-viajera/imagenes/og-preview.jpg">
     <title>Tu postal de La Chipa Viajera</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,700;1,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -74,12 +74,12 @@
             background: #f3f0e8;
         }
 
-        /* Calibrado milimétrico para encajar en el recuadro punteado */
+        /* Estampilla agrandada y centrada ópticamente en el recuadro de la ilustración */
         .estampilla-pegada {
             position: absolute;
-            top: 6.4%;
-            right: 7.2%;
-            width: 14.2%;
+            top: 5.2%;
+            right: 5.8%;
+            width: 17%;
             height: auto;
             display: block;
             object-fit: contain;
@@ -222,22 +222,22 @@
             background: #f3f0e8;
         }
 
-        /* Sincronizado milimétricamente con la vista web */
+        /* Estampilla escalada también para la versión descargable */
         .dl-estampilla {
             position: absolute;
-            top: 6.4%;
-            right: 7.2%;
-            width: 14.2%;
+            top: 5.2%;
+            right: 5.8%;
+            width: 17%;
             height: auto;
         }
 
-        /* Rectángulo flotante compacto: NO llega de extremo a extremo y flota SOBRE los legales */
+        /* Rectángulo flotante bajado a 115px para quedar perfectamente al límite sobre los logos y legales */
         .dl-banner {
             position: absolute;
-            bottom: 145px; /* Ubicación exacta para no tapar los logos inferiores */
+            bottom: 115px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 84%; /* No toca los bordes laterales */
+            width: 84%; 
             background: rgba(255, 255, 255, 0.96);
             border: 2.5px solid var(--dorado);
             border-radius: 16px;
@@ -318,13 +318,13 @@
 
 <footer>La Chipa Viajera — Hecho en Paraguay</footer>
 
-<!-- ══ ZONA OFFSCREEN PARA DESCARGA — Rectángulo flotante compacto sobre el diseño original ══ -->
+<!-- ══ ZONA OFFSCREEN PARA DESCARGA ══ -->
 <div id="zona-descarga">
     <div class="dl-imagen-wrap">
         <img id="dl-img-postal"     class="dl-imagen"     src="" alt="Postal">
         <img id="dl-img-estampilla" class="dl-estampilla" src="" alt="Estampilla" style="display:none">
         
-        <!-- Rectángulo flotante estilizado solo con De y Para -->
+        <!-- Rectángulo flotante optimizado en altura -->
         <div class="dl-banner">
             <div class="dl-banner-item">
                 <div class="dl-banner-label">De:</div>
@@ -442,7 +442,7 @@
         document.getElementById('og-description').setAttribute('content', desc);
     }
 
-    // ── ENVIAR TEXTOS AL RECTÁNGULO FLOTANTE DE DESCARGA ──
+    // ── TEXTOS DEL RECTÁNGULO FLOTANTE DE DESCARGA ──
     document.getElementById('dl-para').textContent = para || '...';
     document.getElementById('dl-de').textContent   = de   || '...';
 
