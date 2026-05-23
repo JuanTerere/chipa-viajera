@@ -92,12 +92,12 @@
             display: block;
         }
 
-        /* Estampilla agrandada para cubrir bien el recuadro */
+        /* Estampilla en % para que escale igual en PC y celular */
         .estampilla-sobre-postal {
             position: absolute;
-            top: 18px;
-            right: 20px;
-            width: 110px;
+            top: 5%;
+            right: 4%;
+            width: 22%;
             height: auto;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             pointer-events: none;
@@ -285,6 +285,7 @@
 
 <script>
     const urlActual = window.location.href;
+    let urlCompartir = urlActual; // se sobreescribe sin ?origen=preview
     let idPostal = '', estampillaId = '', para = '', de = '', mensaje = '';
 
     window.onload = function() {
@@ -292,11 +293,15 @@
         const payload = params.get('d');
         const origen  = params.get('origen');
 
-        // Aviso azul si viene de "ver como queda"
+        // Aviso azul SOLO si viene de "ver como queda" — nunca viaja en links compartidos
         if (origen === 'preview') {
             document.getElementById('borde-aviso-preview').classList.remove('oculto');
             document.getElementById('btn-crear').textContent = 'Crear otra postal';
         }
+
+        // URL limpia para compartir: sin &origen=preview para que el destinatario
+        // nunca vea el cartel de "Vista previa"
+        urlCompartir = window.location.origin + window.location.pathname + '?d=' + (payload || '');
 
         if (!payload) { mostrarError(); return; }
 
@@ -368,7 +373,7 @@
             nombrePara + ', con la Chipa Viajera te enviamos esta hermosa postal, esperamos que la disfrutes!%0A%0A' +
             (mensaje ? '"' + encodeURIComponent(mensaje) + '"%0A%0A' : '') +
             firmaTxt +
-            'Mira tu postal aca:%0A' + encodeURIComponent(urlActual);
+            'Mira tu postal aca:%0A' + encodeURIComponent(urlCompartir);
         window.open('https://wa.me/?text=' + texto, '_blank');
     }
 
@@ -376,7 +381,7 @@
     //  COMPARTIR EN FACEBOOK
     // ══════════════════════════════════════════════════════
     function compartirFacebook() {
-        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(urlActual);
+        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(urlCompartir);
         window.open(url, '_blank', 'width=600,height=400');
     }
 
