@@ -74,16 +74,12 @@
             background: #f3f0e8;
         }
 
-        /*
-         * La estampilla se posiciona DENTRO del recuadro de la postal.
-         * top/right/width calibrados para la postal de Madrid.
-         * Si tenés postales con el recuadro en otra posicion, ajusta estos valores.
-         */
+        /* Calibrado milimétrico para encajar en el recuadro punteado */
         .estampilla-pegada {
             position: absolute;
-            top: 5.5%;
-            right: 5%;
-            width: 11%;
+            top: 6.4%;
+            right: 7.2%;
+            width: 14.2%;
             height: auto;
             display: block;
             object-fit: contain;
@@ -180,7 +176,7 @@
             font-size: 14px; font-weight: 700; cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-descargar:hover { background: var(--dorado-oscuro, #b45309); }
+        .btn-descargar:hover { background: #b45309; }
         .btn-descargar:disabled { opacity: 0.6; cursor: wait; }
 
         .btn-crear {
@@ -226,47 +222,55 @@
             background: #f3f0e8;
         }
 
-        /* Estampilla — misma posicion relativa que en la postal visible */
+        /* Sincronizado milimétricamente con la vista web */
         .dl-estampilla {
             position: absolute;
-            top: 5.5%;
-            right: 5%;
-            width: 11%;
+            top: 6.4%;
+            right: 7.2%;
+            width: 14.2%;
             height: auto;
         }
 
-        /* Rectángulo De/Para superpuesto sobre la imagen, encima del logo */
+        /* Rectángulo flotante compacto: NO llega de extremo a extremo y flota SOBRE los legales */
         .dl-banner {
             position: absolute;
-            bottom: 0;
-            left: 0; right: 0;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(4px);
-            padding: 18px 24px;
+            bottom: 145px; /* Ubicación exacta para no tapar los logos inferiores */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84%; /* No toca los bordes laterales */
+            background: rgba(255, 255, 255, 0.96);
+            border: 2.5px solid var(--dorado);
+            border-radius: 16px;
+            padding: 10px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 3px solid var(--dorado);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
 
-        .dl-banner-de {
-            font-family: 'Nunito', sans-serif;
-            font-size: 18px; font-weight: 700;
-            color: var(--texto-suave);
-        }
-
-        .dl-banner-para {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px; font-weight: 700;
-            color: var(--dorado);
-            text-align: right;
+        .dl-banner-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
         }
 
         .dl-banner-label {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.08em;
-            color: var(--texto-suave); opacity: 0.7;
-            margin-bottom: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--texto-suave);
+        }
+
+        .dl-banner-value {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--texto);
+        }
+
+        #dl-para {
+            font-family: 'Playfair Display', serif;
+            color: var(--dorado);
         }
     </style>
 </head>
@@ -277,7 +281,6 @@
 
     <div class="postal-imagen-wrap" id="wrap-imagen-visible">
         <img id="img-postal" class="postal-imagen" src="" alt="Postal de La Chipa Viajera">
-        <!-- La estampilla se superpone sobre el recuadro de la postal -->
         <img id="img-estampilla" class="estampilla-pegada oculto" src="" alt="Estampilla">
     </div>
 
@@ -309,27 +312,27 @@
         <button class="btn-descargar" id="btn-dl" onclick="descargarPostal()">
             Descargar postal como imagen
         </button>
-        <!-- El texto cambia: "Crear otra postal" si viene de crear, "Crear mi propia postal" si la recibio -->
         <button class="btn-crear" id="btn-crear" onclick="irACrear()">Crear mi propia postal</button>
     </div>
 </div>
 
 <footer>La Chipa Viajera — Hecho en Paraguay</footer>
 
-<!-- ══ ZONA OFFSCREEN PARA DESCARGA — solo imagen + banner De/Para ══ -->
+<!-- ══ ZONA OFFSCREEN PARA DESCARGA — Rectángulo flotante compacto sobre el diseño original ══ -->
 <div id="zona-descarga">
     <div class="dl-imagen-wrap">
         <img id="dl-img-postal"     class="dl-imagen"     src="" alt="Postal">
         <img id="dl-img-estampilla" class="dl-estampilla" src="" alt="Estampilla" style="display:none">
-        <!-- Banner De/Para superpuesto sobre el logo inferior de la postal -->
+        
+        <!-- Rectángulo flotante estilizado solo con De y Para -->
         <div class="dl-banner">
-            <div>
-                <div class="dl-banner-label">De</div>
-                <div class="dl-banner-de" id="dl-de"></div>
+            <div class="dl-banner-item">
+                <div class="dl-banner-label">De:</div>
+                <div class="dl-banner-value" id="dl-de"></div>
             </div>
-            <div style="text-align:right">
-                <div class="dl-banner-label">Para</div>
-                <div class="dl-banner-para" id="dl-para"></div>
+            <div class="dl-banner-item" style="text-align: right;">
+                <div class="dl-banner-label">Para:</div>
+                <div class="dl-banner-value" id="dl-para"></div>
             </div>
         </div>
     </div>
@@ -337,16 +340,15 @@
 
 <script>
     // ══════════════════════════════════════════════════════
-    //  LEER DATOS DESDE ?d= (Base64 JSON)
+    //  LEER DATOS (HÍBRIDO: BASE64 O PARÁMETROS LIMPIOS)
     // ══════════════════════════════════════════════════════
     const urlActual = window.location.href;
     let idPostal = '', estampillaId = '', para = '', de = '', mensaje = '';
-    let esMiCreacion = false; // true cuando viene de probarVista() en index.html
+    let esMiCreacion = false; 
 
     try {
-        const params     = new URLSearchParams(window.location.search);
-        const raw        = params.get('d') || '';
-        esMiCreacion     = params.get('origen') === 'preview';
+        const params = new URLSearchParams(window.location.search);
+        const raw    = params.get('d') || '';
 
         if (raw) {
             const datos  = JSON.parse(decodeURIComponent(escape(atob(raw))));
@@ -355,6 +357,14 @@
             para         = datos.para        || '';
             de           = datos.de          || '';
             mensaje      = datos.msg         || '';
+            esMiCreacion = params.get('origen') === 'preview';
+        } else {
+            idPostal     = params.get('postal') || '';
+            estampillaId = params.get('estampilla') || ''; 
+            para         = params.get('para') || '';
+            de           = params.get('de') || '';
+            mensaje      = params.get('msg') || '';
+            esMiCreacion = true; 
         }
     } catch(e) {
         console.warn('Error leyendo datos:', e);
@@ -432,12 +442,12 @@
         document.getElementById('og-description').setAttribute('content', desc);
     }
 
-    // ── ZONA DE DESCARGA — solo nombres en el banner ──
-    document.getElementById('dl-para').textContent = para || '';
-    document.getElementById('dl-de').textContent   = de   || '';
+    // ── ENVIAR TEXTOS AL RECTÁNGULO FLOTANTE DE DESCARGA ──
+    document.getElementById('dl-para').textContent = para || '...';
+    document.getElementById('dl-de').textContent   = de   || '...';
 
     // ══════════════════════════════════════════════════════
-    //  COMPARTIR POR WHATSAPP — sin emojis, texto limpio
+    //  COMPARTIR POR WHATSAPP
     // ══════════════════════════════════════════════════════
     function compartirWhatsApp() {
         const nombrePara = para ? '*' + para + '*' : 'vos';
@@ -460,7 +470,6 @@
 
     // ══════════════════════════════════════════════════════
     //  DESCARGAR POSTAL COMO IMAGEN
-    //  Captura: postal + estampilla pegada + Para/Mensaje/De
     // ══════════════════════════════════════════════════════
     function descargarPostal() {
         const btn = document.getElementById('btn-dl');
@@ -469,7 +478,6 @@
 
         const zona = document.getElementById('zona-descarga');
 
-        // scale:2 sobre 540x960 = 1080x1920px — formato historia Instagram 9:16
         html2canvas(zona, {
             useCORS:         true,
             allowTaint:      true,
@@ -479,7 +487,6 @@
             backgroundColor: '#f4edd2',
             logging:         false
         }).then(function(canvas) {
-            // Recortar exactamente a 1080x1920 por si html2canvas agrega pixels extra
             const final   = document.createElement('canvas');
             final.width   = 1080;
             final.height  = 1920;
@@ -504,9 +511,6 @@
         });
     }
 
-    // ══════════════════════════════════════════════════════
-    //  CREAR / CREAR OTRA POSTAL
-    // ══════════════════════════════════════════════════════
     function irACrear() {
         window.location.href = 'index.html';
     }
