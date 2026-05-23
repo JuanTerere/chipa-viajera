@@ -38,8 +38,9 @@
         body {
             font-family: 'Nunito', sans-serif;
             display: flex;
-            align-items: flex-start;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
             padding: 20px 16px 40px;
             color: var(--texto);
         }
@@ -219,11 +220,14 @@
         .oculto { display: none !important; }
 
         footer {
+            width: 100%;
             margin-top: 18px;
             font-size: 12px;
             color: var(--texto-suave);
             text-align: center;
             opacity: 0.7;
+            display: block;
+            clear: both;
         }
     </style>
 </head>
@@ -281,7 +285,7 @@
 
 </div>
 
-<footer>La Chipa Viajera — Hecho en Paraguay</footer>
+<footer style="max-width:560px;width:100%;margin-top:18px;font-size:12px;color:#7a6a55;text-align:center;opacity:0.7;">La Chipa Viajera — Hecho en Paraguay</footer>
 
 <script>
     const urlActual = window.location.href;
