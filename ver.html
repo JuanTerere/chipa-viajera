@@ -75,15 +75,15 @@
         }
 
         /*
-         * La estampilla se posiciona DENTRO del recuadro que ya tiene la postal.
-         * Ajustá top/right/width según dónde esté el recuadro en tus imágenes.
-         * Valores actuales: esquina superior derecha, 19% del ancho.
+         * La estampilla se posiciona DENTRO del recuadro de la postal.
+         * top/right/width calibrados para la postal de Madrid.
+         * Si tenés postales con el recuadro en otra posicion, ajusta estos valores.
          */
         .estampilla-pegada {
             position: absolute;
-            top: 6%;
-            right: 3%;
-            width: 19%;
+            top: 7%;
+            right: 4%;
+            width: 14%;
             height: auto;
             display: block;
             object-fit: contain;
@@ -200,62 +200,73 @@
 
         .oculto { display: none !important; }
 
-        /* ── ZONA DESCARGABLE (offscreen) ── */
+        /* ── ZONA DESCARGABLE — formato Historia Instagram 9:16 ── */
         #zona-descarga {
             position: fixed;
             left: -9999px; top: 0;
-            width: 600px;
-            background: white;
+            width: 540px;       /* Se escala x2 en html2canvas → 1080px */
+            height: 960px;      /* Se escala x2 → 1920px  (ratio 9:16) */
+            background: var(--crema-oscuro);
             font-family: 'Nunito', sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
+        /* Imagen ocupa la mayor parte de la historia */
         .dl-imagen-wrap {
             position: relative;
-            width: 100%;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .dl-imagen {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
 
-        /* Estampilla en la zona de descarga — misma posición que en la postal visible */
+        /* Estampilla — misma posicion relativa que en la postal visible */
         .dl-estampilla {
             position: absolute;
-            top: 6%;
-            right: 3%;
-            width: 19%;
+            top: 7%;
+            right: 4%;
+            width: 14%;
             height: auto;
         }
 
+        /* Franja inferior con dedicatoria */
         .dl-dedicatoria {
-            padding: 18px 24px 14px;
+            flex-shrink: 0;
+            padding: 20px 28px 14px;
             background: white;
         }
 
         .dl-para {
             font-family: 'Playfair Display', serif;
-            font-size: 20px; color: var(--texto);
-            margin-bottom: 4px;
+            font-size: 22px; color: var(--texto);
+            margin-bottom: 8px;
         }
 
         .dl-mensaje {
-            font-size: 14px; color: var(--texto);
+            font-size: 15px; color: var(--texto);
             font-style: italic; line-height: 1.6;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border-left: 3px solid var(--dorado);
-            padding-left: 12px;
+            padding-left: 14px;
         }
 
         .dl-de {
-            font-size: 13px; color: var(--texto-suave);
+            font-size: 14px; color: var(--texto-suave);
             font-weight: 700; text-align: right;
         }
 
         .dl-marca {
-            padding: 8px 24px 14px;
-            font-size: 11px; color: var(--texto-suave);
+            flex-shrink: 0;
+            padding: 8px 28px 12px;
+            font-size: 12px; color: var(--texto-suave);
             text-align: center; opacity: 0.6;
             background: var(--crema);
             border-top: 1px solid var(--crema-oscuro);
@@ -465,20 +476,29 @@
 
         const zona = document.getElementById('zona-descarga');
 
+        // scale:2 sobre 540x960 = 1080x1920px — formato historia Instagram 9:16
         html2canvas(zona, {
-            useCORS:      true,
-            allowTaint:   true,
-            scale:        2,
-            backgroundColor: '#ffffff',
-            logging:      false
+            useCORS:         true,
+            allowTaint:      true,
+            scale:           2,
+            width:           540,
+            height:          960,
+            backgroundColor: '#f4edd2',
+            logging:         false
         }).then(function(canvas) {
-            const parteNombre = para ? para.replace(/\s+/g, '-') : 'postal';
-            const parteDe     = de   ? '-de-' + de.replace(/\s+/g, '-') : '';
+            // Recortar exactamente a 1080x1920 por si html2canvas agrega pixels extra
+            const final   = document.createElement('canvas');
+            final.width   = 1080;
+            final.height  = 1920;
+            final.getContext('2d').drawImage(canvas, 0, 0, 1080, 1920);
+
+            const parteNombre   = para ? para.replace(/\s+/g, '-') : 'postal';
+            const parteDe       = de   ? '-de-' + de.replace(/\s+/g, '-') : '';
             const nombreArchivo = 'chipa-viajera-' + parteNombre + parteDe + '.png';
 
-            const link      = document.createElement('a');
-            link.download   = nombreArchivo;
-            link.href       = canvas.toDataURL('image/png');
+            const link    = document.createElement('a');
+            link.download = nombreArchivo;
+            link.href     = final.toDataURL('image/png');
             link.click();
 
             btn.disabled    = false;
