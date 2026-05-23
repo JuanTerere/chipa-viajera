@@ -81,9 +81,9 @@
          */
         .estampilla-pegada {
             position: absolute;
-            top: 7%;
-            right: 4%;
-            width: 14%;
+            top: 5.5%;
+            right: 5%;
+            width: 11%;
             height: auto;
             display: block;
             object-fit: contain;
@@ -204,72 +204,69 @@
         #zona-descarga {
             position: fixed;
             left: -9999px; top: 0;
-            width: 540px;       /* Se escala x2 en html2canvas → 1080px */
-            height: 960px;      /* Se escala x2 → 1920px  (ratio 9:16) */
-            background: var(--crema-oscuro);
+            width: 540px;
+            height: 960px;
+            background: #000;
             font-family: 'Nunito', sans-serif;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
         }
 
-        /* Imagen ocupa la mayor parte de la historia */
         .dl-imagen-wrap {
             position: relative;
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
 
         .dl-imagen {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center top;
             display: block;
+            background: #f3f0e8;
         }
 
         /* Estampilla — misma posicion relativa que en la postal visible */
         .dl-estampilla {
             position: absolute;
-            top: 7%;
-            right: 4%;
-            width: 14%;
+            top: 5.5%;
+            right: 5%;
+            width: 11%;
             height: auto;
         }
 
-        /* Franja inferior con dedicatoria */
-        .dl-dedicatoria {
-            flex-shrink: 0;
-            padding: 20px 28px 14px;
-            background: white;
+        /* Rectángulo De/Para superpuesto sobre la imagen, encima del logo */
+        .dl-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 3px solid var(--dorado);
         }
 
-        .dl-para {
+        .dl-banner-de {
+            font-family: 'Nunito', sans-serif;
+            font-size: 18px; font-weight: 700;
+            color: var(--texto-suave);
+        }
+
+        .dl-banner-para {
             font-family: 'Playfair Display', serif;
-            font-size: 22px; color: var(--texto);
-            margin-bottom: 8px;
+            font-size: 22px; font-weight: 700;
+            color: var(--dorado);
+            text-align: right;
         }
 
-        .dl-mensaje {
-            font-size: 15px; color: var(--texto);
-            font-style: italic; line-height: 1.6;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--dorado);
-            padding-left: 14px;
-        }
-
-        .dl-de {
-            font-size: 14px; color: var(--texto-suave);
-            font-weight: 700; text-align: right;
-        }
-
-        .dl-marca {
-            flex-shrink: 0;
-            padding: 8px 28px 12px;
-            font-size: 12px; color: var(--texto-suave);
-            text-align: center; opacity: 0.6;
-            background: var(--crema);
-            border-top: 1px solid var(--crema-oscuro);
+        .dl-banner-label {
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--texto-suave); opacity: 0.7;
+            margin-bottom: 2px;
         }
     </style>
 </head>
@@ -319,18 +316,23 @@
 
 <footer>La Chipa Viajera — Hecho en Paraguay</footer>
 
-<!-- ══ ZONA OFFSCREEN PARA DESCARGA ══ -->
+<!-- ══ ZONA OFFSCREEN PARA DESCARGA — solo imagen + banner De/Para ══ -->
 <div id="zona-descarga">
     <div class="dl-imagen-wrap">
         <img id="dl-img-postal"     class="dl-imagen"     src="" alt="Postal">
         <img id="dl-img-estampilla" class="dl-estampilla" src="" alt="Estampilla" style="display:none">
+        <!-- Banner De/Para superpuesto sobre el logo inferior de la postal -->
+        <div class="dl-banner">
+            <div>
+                <div class="dl-banner-label">De</div>
+                <div class="dl-banner-de" id="dl-de"></div>
+            </div>
+            <div style="text-align:right">
+                <div class="dl-banner-label">Para</div>
+                <div class="dl-banner-para" id="dl-para"></div>
+            </div>
+        </div>
     </div>
-    <div class="dl-dedicatoria">
-        <div class="dl-para"    id="dl-para"></div>
-        <div class="dl-mensaje" id="dl-mensaje" style="display:none"></div>
-        <div class="dl-de"      id="dl-de"></div>
-    </div>
-    <div class="dl-marca">La Chipa Viajera — Hecho en Paraguay</div>
 </div>
 
 <script>
@@ -430,18 +432,9 @@
         document.getElementById('og-description').setAttribute('content', desc);
     }
 
-    // ── ZONA DE DESCARGA ──
-    if (para) {
-        document.getElementById('dl-para').textContent    = 'Para: ' + para;
-    }
-    if (mensaje) {
-        const dlMsg = document.getElementById('dl-mensaje');
-        dlMsg.textContent    = mensaje;
-        dlMsg.style.display  = 'block';
-    }
-    if (de) {
-        document.getElementById('dl-de').textContent = 'De: ' + de;
-    }
+    // ── ZONA DE DESCARGA — solo nombres en el banner ──
+    document.getElementById('dl-para').textContent = para || '';
+    document.getElementById('dl-de').textContent   = de   || '';
 
     // ══════════════════════════════════════════════════════
     //  COMPARTIR POR WHATSAPP — sin emojis, texto limpio
@@ -451,7 +444,7 @@
         const firmaTxt   = de ? '%0A%0ACon carino, *' + de + '*' : '';
         const texto =
             '*La Chipa Viajera te envio esta hermosa postal*%0A%0A' +
-            'Con la Chipa Viajera te enviamos esta hermosa postal para ' + nombrePara + '.%0A%0A' +
+            nombrePara + ', con la Chipa Viajera te enviamos esta hermosa postal, esperamos que la disfrutes!%0A%0A' +
             (mensaje ? '"' + encodeURIComponent(mensaje) + '"' + firmaTxt + '%0A%0A' : '') +
             'Mira tu postal aca:%0A' + encodeURIComponent(urlActual);
         window.open('https://wa.me/?text=' + texto, '_blank');
