@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Chipa Viajera - Postales del Mundo</title>
+    <title>La Chipa Viajera - Postales y Biblioteca Digital</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -169,6 +169,81 @@
 
         .tarjeta-postal:hover { border-color: var(--dorado); transform: translateY(-2px); }
 
+        /* ── SECCIÓN BIBLIOTECA GRATUITA ── */
+        .tarjeta-libro {
+            display: flex;
+            gap: 16px;
+            background: var(--crema);
+            border: 2px solid var(--borde);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 12px;
+            align-items: center;
+        }
+
+        .libro-portada {
+            width: 95px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .libro-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .libro-info h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            color: var(--texto);
+            line-height: 1.2;
+        }
+
+        .libro-badge {
+            align-self: flex-start;
+            background: var(--dorado);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+            margin: 2px 0;
+        }
+
+        .libro-desc {
+            font-size: 12px;
+            color: var(--texto-suave);
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .btn-descargar-libro {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            color: var(--dorado);
+            border: 2px solid var(--dorado);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-descargar-libro:hover {
+            background: var(--dorado);
+            color: white;
+        }
+
         /* ── FORMULARIO ── */
         .btn-volver {
             background: none; border: none;
@@ -193,18 +268,17 @@
             display: block;
         }
 
-        /* Corregido para encajar milimétricamente sobre el recuadro impreso del diseño */
         .estampilla-sobre-postal {
             position: absolute;
-            top: 5%;
-            right: 4%;
-            width: 22%;
+            top: 24px;
+            right: 26px;
+            width: 72px; 
             height: auto;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             pointer-events: none;
         }
 
-        .campo-grupo { margin-bottom: 10px; }
+        campo-grupo { margin-bottom: 10px; }
 
         .campo-grupo label {
             display: block; font-size: 12px; font-weight: 700;
@@ -291,7 +365,7 @@
 <body>
 <div class="container">
 
-    <!-- ══ BLOQUE 1: SELECCIÓN ══ -->
+    <!-- ══ BLOQUE 1: SELECCIÓN Y BIBLIOTECA ══ -->
     <div id="bloque-seleccion">
         <div class="header-logo">
             <img src="imagenes/Chipa Viajera con maletas1.png" alt="La Chipa Viajera" class="chipa-logo" onerror="this.style.display='none'">
@@ -329,13 +403,28 @@
             <h3 class="seccion-titulo" style="margin-top:18px">Paso 2 · Elegí el diseño de tu postal</h3>
             <div class="galeria-postales" id="contenedor-postales"></div>
         </div>
+
+        <!-- Nueva Sección: Biblioteca Digital de Cuentos Gratuitos -->
+        <div id="seccion-biblioteca" style="margin-top:32px">
+            <h3 class="seccion-titulo">Biblioteca Digital Gratuita</h3>
+            <div class="tarjeta-libro animar">
+                <img src="imagenes/portada_chipa_viajera.jpg" alt="La Chipa Viajera" class="libro-portada" onerror="this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'">
+                <div class="libro-info">
+                    <h4>La Chipa Viajera</h4>
+                    <span class="libro-badge">Gourmand Awards</span>
+                    <p class="libro-desc">Descargá el cuento galardonado como la mejor publicación latinoamericana gratuita del mundo[cite: 3]. ¡Llevá el sabor de casa en PDF!</p>
+                    <a href="archivos/LA_CHIPA_VIAJERA_Digital.pdf" download="La_Chipa_Viajera_Matias_Brizzio.pdf" class="btn-descargar-libro">
+                        📥 Descargar Cuento Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ══ BLOQUE 2: PERSONALIZACIÓN ══ -->
     <div id="bloque-personalizar" class="oculto">
         <button type="button" class="btn-volver" onclick="volverAlCatalogo()">⬅️ Cambiar de diseño</button>
 
-        <!-- Vista previa con estampilla superpuesta -->
         <div class="postal-preview-wrap">
             <img id="vista-postal-grande" src="" class="postal-en-grande" alt="Postal Seleccionada">
             <img id="estampilla-preview" src="" class="estampilla-sobre-postal oculto" alt="Estampilla">
@@ -373,25 +462,20 @@
     const albumesPaises = {
         paraguay: {
             bandera: "🇵🇾", nombre: "Paraguay",
-            postales: [
-                { id: "py_asuncion_costanera", lugar: "Asunción · Costanera" },
-                { id: "py_encarnacion_playa", lugar: "Encarnación · Playa" }
-            ]
+            postales: [{ id: "py_asuncion_costanera", lugar: "Asunción · Costanera" }]
         },
         festivos: {
             bandera: "🎉", nombre: "Días Festivos",
             postales: [
                 { id: "festivo_dia_padre",   lugar: "Día del Padre" },
                 { id: "festivo_dia_madre",   lugar: "Día de la Madre" },
-                { id: "festivo_dia_hijo",    lugar: "Día del Niño" },
+                { id: "festivo_dia_hijo",    lugar: "Día del Hijo" },
                 { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
             ]
         },
         patrios: {
             bandera: "🦅", nombre: "Días Patrios",
-            postales: [
-                { id: "patrio_independencia_py", lugar: "Independencia de Paraguay" }
-            ]
+            postales: [{ id: "patrio_independencia_py", lugar: "Independencia de Paraguay" }]
         },
         francia: {
             bandera: "🇫🇷", nombre: "Francia",
@@ -543,9 +627,6 @@
         }))));
     }
 
-    // ══════════════════════════════════════════════════════
-    //  ENVIAR POR WHATSAPP (Mismo formato que image_e7338a.png)
-    // ══════════════════════════════════════════════════════
     function enviarPorWhatsApp() {
         const datos = obtenerDatosFormulario();
         if (!datos) return;
@@ -566,9 +647,6 @@
         window.open('https://wa.me/?text=' + textoWA, '_blank');
     }
 
-    // ══════════════════════════════════════════════════════
-    //  ENVIAR POR EMAIL (Mismo formato limpio sin emojis)
-    // ══════════════════════════════════════════════════════
     function enviarPorEmail() {
         const datos = obtenerDatosFormulario();
         if (!datos) return;
