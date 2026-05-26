@@ -368,7 +368,7 @@
     <!-- ══ BLOQUE 1: SELECCIÓN Y BIBLIOTECA ══ -->
     <div id="bloque-seleccion">
         <div class="header-logo">
-            <img src="imagenes/Chipa Viajera con maletas1.png" alt="La Chipa Viajera" class="chipa-logo" onerror="this.style.display='none'">
+            <img src="imágenes/Chipa Viajera con maletas1.png" alt="La Chipa Viajera" class="chipa-logo" onerror="this.style.display='none'">
             <h1>Enviá una postal de la Chipa Viajera</h1>
             <p class="bajada">Hacé que la Chipa Viajera lleve tu saludo a cualquier parte del mundo.</p>
         </div>
@@ -409,8 +409,8 @@
             <h3 class="seccion-titulo">Biblioteca Digital Gratuita</h3>
             <div class="tarjeta-libro animar">
                 <!-- Fallback inteligente: si falla .jpg, intenta con .png. Si falla .png, va al placeholder gráfico -->
-                <img src="imagenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" 
-                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='imagenes/TAPA - LA CHIPA VIAJERA.png'; } else { this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'; }">
+                <img src="imágenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" 
+                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='imágenes/TAPA - LA CHIPA VIAJERA.png'; } else { this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'; }">
                 <div class="libro-info">
                     <h4>La Chipa Viajera</h4>
                     <span class="libro-badge">Gourmand Awards</span>
@@ -444,7 +444,7 @@
         </div>
         <div class="campo-grupo">
             <label for="mensaje-dedicatoria">Tu mensaje</label>
-            <textarea id="mensaje-dedicatoria" rows="3" placeholder="Ej: ¡Te mando un abrazo desde París! Que la Chipa Viajera reviva el amor a nuestra patria 🧀🇵🇾"></textarea>
+            <textarea id="mensaje-dedicatoria" rows="3" placeholder="Ej: ¡Te mando un abrazo desde París! Que la Chipa Viajera reviva el amor a nuestra patria"></textarea>
         </div>
 
         <h3 class="seccion-titulo" style="margin-top:18px">Paso 4 · Elegí tu estampilla</h3>
@@ -464,14 +464,16 @@
     const albumesPaises = {
         paraguay: {
             bandera: "🇵🇾", nombre: "Paraguay",
-            postales: [{ id: "py_asuncion_costanera", lugar: "Asunción · Costanera" }]
+            postales: [{ id: "py_asuncion_costanera", lugar: "Asunción · Costanera" },
+                { id: "py_encarnacion_playa", lugar: "Encarnación · Playa" }
+            ]
         },
         festivos: {
             bandera: "🎉", nombre: "Días Festivos",
             postales: [
                 { id: "festivo_dia_padre",   lugar: "Día del Padre" },
                 { id: "festivo_dia_madre",   lugar: "Día de la Madre" },
-                { id: "festivo_dia_hijo",    lugar: "Día del Hijo" },
+                { id: "festivo_dia_hijo",    lugar: "Día del Niño" },
                 { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
             ]
         },
@@ -536,7 +538,7 @@
             const div = document.createElement('div');
             div.className = "tarjeta-estampilla";
             div.id = "est-" + est.id;
-            const rutaImg = "imagenes/" + est.id + ".png";
+            const rutaImg = "imágenes/" + est.id + ".png";
             div.innerHTML = '<img src="' + rutaImg + '" alt="' + est.nombre + '" onerror="this.style.display=\'none\'"><span>' + est.nombre + '</span>';
             div.onclick = () => seleccionarEstampilla(est.id);
             galeriaEst.appendChild(div);
@@ -564,7 +566,7 @@
         const pais = albumesPaises[clave];
 
         pais.postales.forEach(postal => {
-            const rutaImgBase = "imagenes/" + postal.id;
+            const rutaImgBase = "imágenes/" + postal.id;
             const placeholder = "https://placehold.co/500x320/f4edd2/d97706?text=" + encodeURIComponent(postal.lugar);
             
             const div = document.createElement('div');
@@ -615,7 +617,7 @@
         document.getElementById("est-" + idEst).classList.add('activa');
 
         const imgEst = document.getElementById('estampilla-preview');
-        imgEst.src = "imagenes/" + idEst + ".png";
+        imgEst.src = "imágenes/" + idEst + ".png";
         imgEst.classList.remove('oculto');
 
         actualizarPasos(4);

@@ -7,7 +7,7 @@
     <meta property="og:site_name"   content="La Chipa Viajera">
     <meta property="og:title"       id="og-title"       content="Te llego una postal de La Chipa Viajera">
     <meta property="og:description" id="og-description" content="Alguien te mando una postal personalizada. Entra a verla.">
-    <meta property="og:image"       id="og-image"       content="https://juanterere.github.io/chipa-viajera/imagenes/og-preview.jpg">
+    <meta property="og:image"       id="og-image"       content="https://juanterere.github.io/chipa-viajera/im%C3%A1genes/og-preview.jpg">
     <title>Tu Postal - La Chipa Viajera</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -319,7 +319,7 @@
 
             // ── Imagen postal ──
             const imgPostal = document.getElementById('vista-postal-grande');
-            imgPostal.src = 'imagenes/' + idPostal + '.jpg';
+            imgPostal.src = 'imágenes/' + idPostal + '.jpg';
             imgPostal.onerror = function() {
                 this.src = 'https://placehold.co/500x320/f4edd2/d97706?text=Postal+No+Encontrada';
             };
@@ -327,11 +327,11 @@
             // ── Estampilla ──
             if (estampillaId) {
                 const imgEst = document.getElementById('estampilla-preview');
-                imgEst.src = 'imagenes/' + estampillaId + '.png';
+                imgEst.src = 'imágenes/' + estampillaId + '.png';
                 imgEst.classList.remove('oculto');
                 // OG image = la postal misma
                 document.getElementById('og-image').setAttribute('content',
-                    'https://juanterere.github.io/chipa-viajera/imagenes/' + idPostal + '.jpg');
+                    'https://juanterere.github.io/chipa-viajera/im%C3%A1genes/' + idPostal + '.jpg');
             }
 
             // ── Textos dedicatoria ──
