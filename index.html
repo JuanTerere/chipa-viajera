@@ -210,6 +210,19 @@
             margin: 2px 0;
         }
 
+        .libro-badge {
+            align-self: flex-start;
+            background: var(--dorado);
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+            margin: 2px 0;
+        }
+
         .libro-desc {
             font-size: 12px;
             color: var(--texto-suave);
@@ -463,10 +476,6 @@
                 { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
             ]
         },
-        patrios: {
-            bandEagle: "🦅", bandera: "🦅", nombre: "Días Patrios",
-            postales: [{ id: "patrio_independencia_py", lugar: "Independencia de Paraguay" }]
-        },
         francia: {
             bandera: "🇫🇷", nombre: "Francia",
             postales: [
@@ -482,24 +491,24 @@
                 { id: "es_barcelona_sagrada",  lugar: "Barcelona · Sagrada Familia" },
             ]
         },
-        italia: {
-            bandera: "🇮🇹", nombre: "Italia",
-            postales: [
-                { id: "it_roma_coliseo",   lugar: "Roma · Coliseo" },
-                { id: "it_venecia_canal",  lugar: "Venecia · Gran Canal" },
-            ]
-        },
         brasil: {
             bandera: "🇧🇷", nombre: "Brasil",
             postales: [
                 { id: "Br_Recife_Centro", lugar: "Recife · Centro" }
+            ]
+        },
+        dominicana: {
+            bandera: "🇩🇴", nombre: "República Dominicana",
+            postales: [
+                { id: "rd_santodomingo_alcazardecolon", lugar: "Santo Domingo · Alcázar de Colón" }
             ]
         }
     };
 
     const estampillas = [
         { id: "Estampilla Azul", nombre: "Azul" },
-        { id: "Estampilla Mundial2026", nombre: "Mundial 2026" }
+        { id: "Estampilla Mundial2026", nombre: "Mundial 2026" },
+        { id: "Estampilla Tatakua", nombre: "Tatakua" }
     ];
 
     let paisActivo          = "";
@@ -646,7 +655,7 @@
 
         const deTexto = de ? de : '';
         const textoWA =
-            'La Chipa Viajera te envió esta hermosa postal%0A%0A' +
+            'La Chipa Viajera te envió una postal!%0A%0A' +
             '*' + para + '*, con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!%0A%0A' +
             '"' + encodeURIComponent(mensaje) + '"%0A%0A' +
             'Con cariño, *' + deTexto + '*%0A%0A' +
@@ -664,10 +673,10 @@
         const payload    = armarPayload(para, de, mensaje);
         const urlPostal  = URL_BASE + '/ver.html?d=' + payload;
 
-        const asunto = encodeURIComponent('La Chipa Viajera te envió esta hermosa postal');
+        const asunto = encodeURIComponent('La Chipa Viajera te envió una postal!');
         const deTexto = de ? de : '';
         const cuerpoEmail = encodeURIComponent(
-            'La Chipa Viajera te envió esta hermosa postal\n\n' +
+            'La Chipa Viajera te envió una postal!\n\n' +
             para + ', con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!\n\n' +
             '"' + mensaje + '"\n\n' +
             'Con cariño, ' + deTexto + '\n\n' +
