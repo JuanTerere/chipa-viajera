@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Chipa Viajera - Postales y Biblioteca Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700;900&family=Nunito:wght=400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --dorado: #d97706;
@@ -278,7 +278,7 @@
             pointer-events: none;
         }
 
-        campo-grupo { margin-bottom: 10px; }
+        .campo-grupo { margin-bottom: 10px; }
 
         .campo-grupo label {
             display: block; font-size: 12px; font-weight: 700;
@@ -404,15 +404,15 @@
             <div class="galeria-postales" id="contenedor-postales"></div>
         </div>
 
-        <!-- Nueva Sección: Biblioteca Digital de Cuentos Gratuitos -->
+        <!-- Sección: Biblioteca Digital de Cuentos Gratuitos -->
         <div id="seccion-biblioteca" style="margin-top:32px">
             <h3 class="seccion-titulo">Biblioteca Digital Gratuita</h3>
             <div class="tarjeta-libro animar">
-                <img src="imagenes/portada_chipa_viajera.jpg" alt="La Chipa Viajera" class="libro-portada" onerror="this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'">
+                <img src="imagenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" onerror="this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'">
                 <div class="libro-info">
                     <h4>La Chipa Viajera</h4>
                     <span class="libro-badge">Gourmand Awards</span>
-                    <p class="libro-desc">Descargá el cuento galardonado como la mejor publicación latinoamericana gratuita del mundo[cite: 3]. ¡Llevá el sabor de casa en PDF!</p>
+                    <p class="libro-desc">Descargá el cuento galardonado como la mejor publicación latinoamericana gratuita del mundo.</p>
                     <a href="archivos/LA_CHIPA_VIAJERA_Digital.pdf" download="La_Chipa_Viajera_Matias_Brizzio.pdf" class="btn-descargar-libro">
                         📥 Descargar Cuento Gratis
                     </a>
@@ -498,6 +498,12 @@
                 { id: "it_roma_coliseo",   lugar: "Roma · Coliseo" },
                 { id: "it_venecia_canal",  lugar: "Venecia · Gran Canal" },
             ]
+        },
+        brasil: {
+            bandera: "🇧🇷", nombre: "Brasil",
+            postales: [
+                { id: "br_recife_centro", lugar: "Recife · Centro" }
+            ]
         }
     };
 
@@ -545,6 +551,7 @@
     }
 
     function cargarAlbumPais(clave) {
+        text_paisActivo = clave;
         paisActivo = clave;
         postalSeleccionada = "";
 
