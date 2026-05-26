@@ -457,7 +457,7 @@
         festivos: {
             bandera: "🎉", nombre: "Días Festivos",
             postales: [
-                { id: "diadelpadre_primera", lugar: "Día del Padre - Diseño 1" },
+                { id: "diadelpadre_primera", lugar: "Día del Padre" },
                 { id: "festivo_dia_madre",   lugar: "Día de la Madre" },
                 { id: "festivo_dia_hijo",    lugar: "Día del Niño" },
                 { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
@@ -620,7 +620,7 @@
         const mensaje = document.getElementById('mensaje-dedicatoria').value.trim();
 
         if (!postalSeleccionada) { alert("¡Seleccioná una postal primero!"); return null; }
-        if (!para)   { alert("¡Escribí el nombre de quien recibe la postal!"); return null; }
+        if (!para)   { alert("¡Escribí el nombre de quien recibe the postal!"); return null; }
         if (!mensaje){ alert("¡Escribí tu mensaje o dedicatoria!"); return null; }
 
         return { para, de, mensaje };
