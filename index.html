@@ -408,7 +408,9 @@
         <div id="seccion-biblioteca" style="margin-top:32px">
             <h3 class="seccion-titulo">Biblioteca Digital Gratuita</h3>
             <div class="tarjeta-libro animar">
-                <img src="imagenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" onerror="this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'">
+                <!-- Fallback inteligente: si falla .jpg, intenta con .png. Si falla .png, va al placeholder gráfico -->
+                <img src="imagenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" 
+                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='imagenes/TAPA - LA CHIPA VIAJERA.png'; } else { this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'; }">
                 <div class="libro-info">
                     <h4>La Chipa Viajera</h4>
                     <span class="libro-badge">Gourmand Awards</span>
@@ -474,7 +476,7 @@
             ]
         },
         patrios: {
-            bandera: "🦅", nombre: "Días Patrios",
+            bandEagle: "🦅", bandera: "🦅", nombre: "Días Patrios",
             postales: [{ id: "patrio_independencia_py", lugar: "Independencia de Paraguay" }]
         },
         francia: {
@@ -502,7 +504,7 @@
         brasil: {
             bandera: "🇧🇷", nombre: "Brasil",
             postales: [
-                { id: "br_recife_centro", lugar: "Recife · Centro" }
+                { id: "Br_Recife_Centro", lugar: "Recife · Centro" } // Corregido el Case-Sensitivity para GitHub Pages
             ]
         }
     };
@@ -551,7 +553,6 @@
     }
 
     function cargarAlbumPais(clave) {
-        text_paisActivo = clave;
         paisActivo = clave;
         postalSeleccionada = "";
 
@@ -563,12 +564,19 @@
         const pais = albumesPaises[clave];
 
         pais.postales.forEach(postal => {
-            const rutaImg   = "imagenes/" + postal.id + ".jpg";
+            const rutaImgBase = "imagenes/" + postal.id;
             const placeholder = "https://placehold.co/500x320/f4edd2/d97706?text=" + encodeURIComponent(postal.lugar);
+            
             const div = document.createElement('div');
             div.className = "tarjeta-postal animar";
-            div.innerHTML = '<img src="' + rutaImg + '" alt="' + postal.lugar + '" onerror="this.src=\'' + placeholder + '\'"><p>' + postal.lugar + '</p>';
-            div.onclick = () => seleccionarPostal(postal.id, rutaImg, placeholder, postal.lugar);
+            
+            // Sistema dual de carga .jpg -> .png para evitar fallos de extensión en producción
+            div.innerHTML = `
+                <img src="${rutaImgBase}.jpg" alt="${postal.lugar}" 
+                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='${rutaImgBase}.png'; } else if (this.src.indexOf('.png') !== -1) { this.src='${rutaImgBase}.jpeg'; } else { this.src='${placeholder}'; }">
+                <p>${postal.lugar}</p>
+            `;
+            div.onclick = () => seleccionarPostal(postal.id, rutaImgBase + '.jpg', placeholder, postal.lugar);
             contenedor.appendChild(div);
         });
 
@@ -582,7 +590,15 @@
         const imgGrande = document.getElementById('vista-postal-grande');
         imgGrande.src = rutaImg;
         imgGrande.alt = nombreLugar;
-        imgGrande.onerror = function() { this.src = placeholder; };
+        
+        // Manejador de error para la vista previa grande
+        imgGrande.onerror = function() { 
+            if(this.src.indexOf('.jpg') !== -1) { 
+                this.src = this.src.replace('.jpg', '.png'); 
+            } else { 
+                this.src = placeholder; 
+            } 
+        };
 
         document.getElementById('bloque-seleccion').classList.add('oculto');
         document.getElementById('bloque-personalizar').classList.remove('oculto');
