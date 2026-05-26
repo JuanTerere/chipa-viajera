@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Chipa Viajera - Postales y Biblioteca Digital</title>
+
+    <!-- Etiquetas Open Graph para la vista previa de WhatsApp -->
+    <meta property="og:title" content="La Chipa Viajera - ¡Te enviaron una postal!">
+    <meta property="og:description" content="Recibiste una postal personalizada. Entrá para ver la dedicatoria y viajar con la Chipa Viajera.">
+    <meta property="og:image" content="https://juanterere.github.io/chipa-viajera/imagenes/portadapotales.jpg">
+    <meta property="og:url" content="https://juanterere.github.io/chipa-viajera/">
+    <meta property="og:type" content="website">
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700;900&family=Nunito:wght=400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -195,19 +203,6 @@
             font-size: 17px;
             color: var(--texto);
             line-height: 1.2;
-        }
-
-        .libro-badge {
-            align-self: flex-start;
-            background: var(--dorado);
-            color: white;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 20px;
-            letter-spacing: 0.05em;
-            margin: 2px 0;
         }
 
         .libro-badge {
@@ -629,7 +624,7 @@
         const mensaje = document.getElementById('mensaje-dedicatoria').value.trim();
 
         if (!postalSeleccionada) { alert("¡Seleccioná una postal primero!"); return null; }
-        if (!para)   { alert("¡Escribí el nombre de quien recibe the postal!"); return null; }
+        if (!para)   { alert("¡Escribí el nombre de quien recibe la postal!"); return null; }
         if (!mensaje){ alert("¡Escribí tu mensaje o dedicatoria!"); return null; }
 
         return { para, de, mensaje };
