@@ -12,7 +12,7 @@
         /* POSTAL PRINCIPAL Y ESTAMPILLA FLOTANTE */
         .postal-container { width: 100%; position: relative; margin-bottom: 12px; }
         .postal-imagen { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .postal-placeholder { width: 100%; min-height: 200px; background: #f3f4f6; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; }
+        .postal-placeholder { width: 100%; min-height: 250px; background: #f3f4f6; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; border: 2px dashed #ccc; }
         
         .estampilla-tech {
             position: absolute;
@@ -71,9 +71,9 @@
 
     <div class="postal-container">
         <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje" onerror="corregirExtensionPostal(this);">
-        <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Postal no disponible</div>
+        <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Cargando imagen de la postal...</div>
         
-        <img id="estampilla-pantalla" src="imagenes/Estampilla EmprendeTECH.png" class="estampilla-tech" alt="Estampilla Digital" onerror="this.src='imagenes/Estampilla_Digital_Mundial.png'; this.onerror=function(){this.style.display='none';};">
+        <img id="estampilla-pantalla" src="imagenes/Estampilla EmprendeTECH.png" class="estampilla-tech" alt="Estampilla Digital" onerror="this.style.display='none';">
     </div>
 
     <div class="postal-acciones">
@@ -122,18 +122,16 @@
 
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const payloadData = urlParams.get('d'); // Captura el cifrado de index
+        const payloadData = urlParams.get('d');
 
-        // Valores por defecto
         let postal = "";
         let para = "";
         let de = "";
         let msg = "";
 
-        // PROCESADO DEL PAQUETE ENCRIPTADO (Sincronizado milimétricamente con tu index.html)
+        // DECODIFICACIÓN SEGURA DEL PAYLOAD BASE64
         if (payloadData) {
             try {
-                // Decodificación estándar Base64 para datos UTF-8 estructurados
                 const jsonString = decodeURIComponent(escape(atob(payloadData)));
                 const datos = JSON.parse(jsonString);
                 
@@ -146,36 +144,30 @@
             }
         }
 
-        // SALVAVIDAS: Si por algún motivo no vino 'd', leemos variables directas de la URL
+        // SALVAVIDAS: Si el enlace viene directo por parámetros tradicionales
         if (!postal) postal = urlParams.get('postal');
         if (!para) para = urlParams.get('para');
         if (!de) de = urlParams.get('de');
         if (!msg) msg = urlParams.get('msg');
 
-        postalIdGlobal = postal;
+        // Limpieza profunda de strings por si quedan residuos de comillas en la conversión JSON
+        if (postal) postal = postal.replace(/['"]+/g, '');
+        postalIdGlobal = postal || "postal1"; 
 
-        // Renderizar Textos
-        if (para) {
-            document.getElementById('txt-para').innerText = decodeURIComponent(para);
-        }
+        // Renderizar Textos en pantalla
+        if (para) document.getElementById('txt-para').innerText = decodeURIComponent(para).replace(/['"]+/g, '');
         if (de) {
-            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(de) + ':';
+            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(de).replace(/['"]+/g, '') + ':';
         } else {
             document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
         }
-        if (msg) {
-            document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg) + '"';
-        }
+        if (msg) document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg).replace(/['"]+/g, '') + '"';
 
-        // Renderizar Postal
+        // Renderizar la Postal seleccionada
         const imgPostal = document.getElementById('postal-pantalla');
-        if (postal) {
-            imgPostal.src = 'imagenes/' + postal + '.jpg';
-            document.getElementById('link-descargar').href = 'imagenes/' + postal + '.jpg';
-        } else {
-            imgPostal.style.display = 'none';
-            document.getElementById('postal-placeholder').style.display = 'flex';
-        }
+        let rutaInicial = 'imagenes/' + postalIdGlobal + '.jpg';
+        imgPostal.src = rutaInicial;
+        document.getElementById('link-descargar').href = rutaInicial;
 
         // CONTADOR DE VISITAS LOCALES
         let visitas = localStorage.getItem('contador_postal_viajes');
@@ -184,14 +176,16 @@
         document.getElementById('info-contador').innerText = '📍 Sos el viajero N° ' + visitas + ' en abrir esta postal en este dispositivo.';
     };
 
-    // Función por si guardaste alguna postal en formato .png en tu servidor
+    // Si falla la extensión .jpg, el navegador salta a buscar el archivo en .png de inmediato
     function corregirExtensionPostal(img) {
         if (img.src.endsWith('.jpg')) {
-            img.src = 'imagenes/' + postalIdGlobal + '.png';
-            document.getElementById('link-descargar').href = 'imagenes/' + postalIdGlobal + '.png';
+            let rutaPng = 'imagenes/' + postalIdGlobal + '.png';
+            img.src = rutaPng;
+            document.getElementById('link-descargar').href = rutaPng;
         } else {
             img.style.display = 'none';
             document.getElementById('postal-placeholder').style.display = 'flex';
+            document.getElementById('postal-placeholder').innerText = "📮 Postal no disponible (" + postalIdGlobal + ")";
         }
     }
 
