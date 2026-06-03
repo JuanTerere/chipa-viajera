@@ -3,695 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Chipa Viajera - Postales y Biblioteca Digital</title>
-
-    <!-- Etiquetas Open Graph para la vista previa de WhatsApp -->
-    <meta property="og:title" content="La Chipa Viajera - ¡Te enviaron una postal!">
-    <meta property="og:description" content="Recibiste una postal personalizada. Entrá para ver la dedicatoria y viajar con la Chipa Viajera.">
-    <meta property="og:image" content="https://juanterere.github.io/chipa-viajera/imagenes/portadapotales.jpg">
-    <meta property="og:url" content="https://juanterere.github.io/chipa-viajera/">
-    <meta property="og:type" content="website">
-
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700;900&family=Nunito:wght=400;600;700&display=swap" rel="stylesheet">
+    <title>¡Te llegó una Postal Viajera! 📮</title>
     <style>
-        :root {
-            --dorado: #d97706;
-            --dorado-oscuro: #b45309;
-            --crema: #fdf6e3;
-            --crema-oscuro: #f4edd2;
-            --texto: #3a2c1a;
-            --texto-suave: #7a6a55;
-            --borde: #e0d5c0;
-            --verde-wa: #25D366;
-            --verde-wa-oscuro: #128C7E;
-            --azul-email: #3b82f6;
-            --azul-email-oscuro: #1d4ed8;
-        }
+        body { font-family: 'Arial', sans-serif; background-color: #f4edd2; text-align: center; padding: 20px; color: #333; margin: 0; }
+        .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        
+        .postal-container { width: 100%; margin-bottom: 20px; }
+        .postal-imagen { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        
+        .carta-dedicatoria { background: #faf8f0; border-left: 5px solid #d97706; padding: 20px; border-radius: 0 10px 10px 0; text-align: left; margin: 20px 0; }
+        .carta-dedicatoria h2 { margin-top: 0; color: #d97706; font-size: 20px; }
+        .carta-dedicatoria p.mensaje { font-style: italic; font-size: 16px; line-height: 1.5; color: #444; margin-bottom: 0; }
+        
+        button.btn-crear { width: 100%; padding: 15px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        button.btn-crear:hover { background-color: #b45309; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* RECUADRO COMPACTO ESTILO CATÁLOGO PARA EL JUEGO */
+        .tarjeta-juego-minisize { display: flex; align-items: center; gap: 15px; border: 2px solid #ccc; border-radius: 12px; overflow: hidden; text-decoration: none; background: #fafafa; padding: 10px; transition: 0.3s; margin-bottom: 15px; }
+        .tarjeta-juego-minisize img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background-color: #f3f4f6; flex-shrink: 0; }
+        .tarjeta-juego-minisize p { margin: 0; font-size: 15px; font-weight: bold; color: #d97706; text-align: left; }
+        .tarjeta-juego-minisize:hover { border-color: #d97706; background: #fffdf5; }
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--crema-oscuro);
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 20px 16px 40px;
-            color: var(--texto);
-        }
+        /* BOTÓN INSTAGRAM COMPACTO */
+        .btn-instagram { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; text-decoration: none; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .btn-instagram:hover { opacity: 0.9; }
 
-        .container {
-            max-width: 560px;
-            width: 100%;
-            background: white;
-            padding: 28px 24px;
-            border-radius: 24px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
-        }
-
-        .header-logo { text-align: center; margin-bottom: 20px; }
-
-        .chipa-logo {
-            width: 140px !important;
-            max-width: 140px !important;
-            height: 140px !important;
-            max-height: 140px !important;
-            display: block;
-            margin: 0 auto 12px;
-            object-fit: contain;
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.15));
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            color: var(--dorado);
-            font-size: 22px;
-            line-height: 1.2;
-            margin-bottom: 6px;
-        }
-
-        p.bajada { color: var(--texto-suave); font-size: 14px; line-height: 1.5; }
-
-        .pasos {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin: 18px 0 20px;
-            flex-wrap: wrap;
-        }
-
-        .paso-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--texto-suave);
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-
-        .paso-item.activo { opacity: 1; color: var(--dorado); }
-        .paso-item.completo { opacity: 0.7; color: var(--dorado-oscuro); }
-
-        .paso-num {
-            width: 22px; height: 22px;
-            border-radius: 50%;
-            background: var(--crema-oscuro);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        .paso-item.activo .paso-num { background: var(--dorado); color: white; }
-        .paso-item.completo .paso-num { background: var(--dorado-oscuro); color: white; }
-
-        .paso-sep { color: var(--borde); font-size: 12px; }
-
-        h3.seccion-titulo {
-            color: var(--dorado);
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin: 0 0 10px 0;
-            padding-bottom: 6px;
-            border-bottom: 2px solid var(--crema-oscuro);
-        }
-
-        .menu-paises {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
-
-        .btn-pais {
-            padding: 10px 16px;
-            font-size: 14px; font-weight: 700;
-            font-family: 'Nunito', sans-serif;
-            border: 2px solid var(--borde);
-            border-radius: 10px;
-            background: var(--crema);
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--texto);
-        }
-
-        .btn-pais:hover { border-color: var(--dorado); background: var(--crema-oscuro); }
-        .btn-pais.activo { background: var(--dorado); color: white; border-color: var(--dorado-oscuro); }
-
-        .galeria-postales {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .tarjeta-postal {
-            border: 2px solid var(--borde);
-            border-radius: 14px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--crema);
-        }
-
-        .tarjeta-postal img {
-            width: 100%; display: block;
-            height: 120px; object-fit: contain;
-            background: #f3f4f6; padding: 6px;
-        }
-
-        .tarjeta-postal p {
-            margin: 6px 8px 10px;
-            font-size: 12px; font-weight: 700;
-            color: var(--texto-suave); text-align: center; line-height: 1.3;
-        }
-
-        .tarjeta-postal:hover { border-color: var(--dorado); transform: translateY(-2px); }
-
-        .tarjeta-libro {
-            display: flex;
-            gap: 16px;
-            background: var(--crema);
-            border: 2px solid var(--borde);
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 12px;
-            align-items: center;
-        }
-
-        .libro-portada {
-            width: 95px;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            object-fit: cover;
-        }
-
-        .libro-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .libro-info h4 {
-            font-family: 'Playfair Display', serif;
-            font-size: 17px;
-            color: var(--texto);
-            line-height: 1.2;
-        }
-
-        .libro-badge {
-            align-self: flex-start;
-            background: var(--dorado);
-            color: white;
-            font-size: 9px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 20px;
-            letter-spacing: 0.05em;
-            margin: 2px 0;
-        }
-
-        .libro-desc {
-            font-size: 12px;
-            color: var(--texto-suave);
-            line-height: 1.4;
-            margin-bottom: 6px;
-        }
-
-        .btn-descargar-libro {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            color: var(--dorado);
-            border: 2px solid var(--dorado);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .btn-descargar-libro:hover {
-            background: var(--dorado);
-            color: white;
-        }
-
-        .btn-volver {
-            background: none; border: none;
-            color: var(--texto-suave);
-            font-size: 13px; font-family: 'Nunito', sans-serif; font-weight: 700;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
-            padding: 0; margin-bottom: 14px;
-        }
-        .btn-volver:hover { color: var(--dorado); }
-
-        .postal-preview-wrap {
-            position: relative;
-            margin-bottom: 18px;
-            border-radius: 16px;
-            overflow: hidden;
-            width: 100%;
-        }
-
-        .postal-en-grande {
-            width: 100%; 
-            height: auto; 
-            display: block;
-        }
-
-        .estampilla-sobre-postal {
-            position: absolute;
-            top: 24px;
-            right: 26px;
-            width: 72px; 
-            height: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-            pointer-events: none;
-        }
-
-        .campo-grupo { margin-bottom: 10px; }
-
-        .campo-grupo label {
-            display: block; font-size: 12px; font-weight: 700;
-            color: var(--texto-suave); text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 4px;
-        }
-
-        input, textarea {
-            width: 100%; padding: 11px 14px;
-            border: 2px solid var(--borde); border-radius: 10px;
-            font-family: 'Nunito', sans-serif; font-size: 14px;
-            color: var(--texto); background: var(--crema); transition: border-color 0.2s;
-        }
-
-        input:focus, textarea:focus { border-color: var(--dorado); outline: none; background: white; }
-        textarea { resize: vertical; min-height: 80px; }
-
-        .galeria-estampillas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 6px;
-        }
-
-        .tarjeta-estampilla {
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            cursor: pointer; padding: 8px 10px;
-            border: 2px solid var(--borde); border-radius: 12px;
-            background: var(--crema); transition: all 0.2s;
-            font-size: 11px; font-weight: 700; color: var(--texto-suave);
-        }
-
-        .tarjeta-estampilla img {
-            width: 60px; height: 60px;
-            object-fit: contain;
-        }
-
-        .tarjeta-estampilla:hover { border-color: var(--dorado); }
-        .tarjeta-estampilla.activa { border-color: var(--dorado); background: var(--crema-oscuro); color: var(--dorado); }
-
-        .btn-whatsapp {
-            width: 100%; padding: 15px;
-            background: var(--verde-wa); color: white;
-            border: none; border-radius: 12px;
-            font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700;
-            cursor: pointer; margin-top: 16px;
-            box-shadow: 0 4px 14px rgba(37,211,102,0.35);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: all 0.2s;
-        }
-        .btn-whatsapp:hover { background: var(--verde-wa-oscuro); transform: translateY(-1px); }
-
-        .btn-email {
-            width: 100%; padding: 15px;
-            background: var(--azul-email); color: white;
-            border: none; border-radius: 12px;
-            font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700;
-            cursor: pointer; margin-top: 10px;
-            box-shadow: 0 4px 14px rgba(59,130,246,0.35);
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: all 0.2s;
-        }
-        .btn-email:hover { background: var(--azul-email-oscuro); transform: translateY(-1px); }
-
-        .btn-preview {
-            width: 100%; padding: 12px;
-            background: white; color: var(--dorado);
-            border: 2px solid var(--dorado); border-radius: 12px;
-            font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
-            cursor: pointer; margin-top: 10px; transition: all 0.2s;
-        }
-        .btn-preview:hover { background: var(--crema); }
-
-        @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        .animar { animation: fadeSlideIn 0.35s ease both; }
-        .oculto { display: none !important; }
+        /* CONTADOR DE VISITAS */
+        .contador-visitas { font-size: 12px; color: #888; font-style: italic; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
+
 <div class="container">
-
-    <div id="bloque-seleccion">
-        <div class="header-logo">
-            <img src="imagenes/Chipa Viajera con maletas1.png" alt="La Chipa Viajera" class="chipa-logo" onerror="this.style.display='none'">
-            <h1>Enviá una postal de la Chipa Viajera</h1>
-            <p class="bajada">Hacé que la Chipa Viajera lleve tu saludo a cualquier parte del mundo.</p>
-        </div>
-
-        <div class="pasos">
-            <div class="paso-item activo" id="paso1">
-                <div class="paso-num">1</div><span>Motivo</span>
-            </div>
-            <span class="paso-sep">›</span>
-            <div class="paso-item" id="paso2">
-                <div class="paso-num">2</div><span>Postal</span>
-            </div>
-            <span class="paso-sep">›</span>
-            <div class="paso-item" id="paso3">
-                <div class="paso-num">3</div><span>Mensaje</span>
-            </div>
-            <span class="paso-sep">›</span>
-            <div class="paso-item" id="paso4">
-                <div class="paso-num">4</div><span>Estampilla</span>
-            </div>
-            <span class="paso-sep">›</span>
-            <div class="paso-item" id="paso5">
-                <div class="paso-num">5</div><span>Enviar</span>
-            </div>
-        </div>
-
-        <h3 class="seccion-titulo">Paso 1 · ¿Cúal es el motivo u origen de la postal?</h3>
-        <div class="menu-paises" id="menu-paises"></div>
-
-        <div id="seccion-album" class="oculto">
-            <h3 class="seccion-titulo" style="margin-top:18px">Paso 2 · Elegí el diseño de tu postal</h3>
-            <div class="galeria-postales" id="contenedor-postales"></div>
-        </div>
-
-        <div id="seccion-biblioteca" style="margin-top:32px">
-            <h3 class="seccion-titulo">Biblioteca Digital Gratuita</h3>
-            <div class="tarjeta-libro animar">
-                <img src="imagenes/TAPA - LA CHIPA VIAJERA.jpg" alt="La Chipa Viajera" class="libro-portada" 
-                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='imagenes/TAPA - LA CHIPA VIAJERA.png'; } else { this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Chipa+Viajera'; }">
-                <div class="libro-info">
-                    <h4>La Chipa Viajera</h4>
-                    <span class="libro-badge">Gourmand Awards</span>
-                    <p class="libro-desc">Descargá el cuento galardonado como la mejor publicación latinoamericana gratuita del mundo.</p>
-                    <a href="archivos/LA_CHIPA_VIAJERA_Digital.pdf" download="La_Chipa_Viajera_Matias_Brizzio.pdf" class="btn-descargar-libro">
-                        📥 Descargar Cuento Gratis
-                    </a>
-                </div>
-            </div>
-        </div>
+    
+    <div class="postal-container">
+        <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje">
     </div>
 
-    <div id="bloque-personalizar" class="oculto">
-        <button type="button" class="btn-volver" onclick="volverAlCatalogo()">⬅️ Cambiar de diseño</button>
+    <div class="carta-dedicatoria">
+        <h2>¡Hola, <span id="txt-para">viajero</span>! 👋✈️</h2>
+        <p class="mensaje" id="txt-mensaje">Te enviaron un saludo especial desde el recorrido de La Chipa Viajera.</p>
+    </div>
 
-        <div class="postal-preview-wrap">
-            <img id="vista-postal-grande" src="" class="postal-en-grande" alt="Postal Seleccionada">
-            <img id="estampilla-preview" src="" class="estampilla-sobre-postal oculto" alt="Estampilla">
-        </div>
+    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 25px 0;">
 
-        <h3 class="seccion-titulo">Paso 3 · Personalizá tu dedicatoria</h3>
+    <button class="btn-crear" onclick="irAInicio()">📮 ¡Crear mi propia postal gratis!</button>
 
-        <div class="campo-grupo">
-            <label for="nombre-para">¿Para quién es la postal?</label>
-            <input type="text" id="nombre-para" placeholder="Ej: Matías">
-        </div>
-        <div class="campo-grupo">
-            <label for="nombre-de">¿De parte de quién?</label>
-            <input type="text" id="nombre-de" placeholder="Ej: Jeani">
-        </div>
-        <div class="campo-grupo">
-            <label for="mensaje-dedicatoria">Tu mensaje</label>
-            <textarea id="mensaje-dedicatoria" rows="3" placeholder="Ej: ¡Te mando un abrazo desde París! Que la Chipa Viajera reviva el amor a nuestra patria"></textarea>
-        </div>
+    <!-- RECUADRO COMPACTO PARA EL VIDEOJUEGO -->
+    <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="tarjeta-juego-minisize" title="¡Jugá al juego de la Chipa Viajera!">
+        <img src="imagenes/publi_juego_chipa.jpg" alt="Chipa Fugitiva" onerror="this.src='https://placehold.co/100x100?text=Juego'">
+        <p>🎮 ¡Jugá al juego de la Chipa Viajera!</p>
+    </a>
 
-        <h3 class="seccion-titulo" style="margin-top:18px">Paso 4 · Elegí tu estampilla</h3>
-        <div class="galeria-estampillas" id="galeria-estampillas"></div>
+    <!-- BOTÓN INSTAGRAM -->
+    <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
+        📸 Seguir a Juan Tereré en Instagram
+    </a>
 
-        <h3 class="seccion-titulo" style="margin-top:18px">Paso 5 · Enviá tu postal</h3>
-        <button type="button" class="btn-whatsapp" onclick="enviarPorWhatsApp()">🚀 Enviar por WhatsApp</button>
-        <button type="button" class="btn-email" onclick="enviarPorEmail()">📧 Enviar por Correo</button>
-        <button type="button" class="btn-preview" onclick="probarVista()">👁️ Ver cómo queda antes de enviar</button>
+    <div class="contador-visitas" id="info-contador">
+        Cargando estadísticas de viaje...
     </div>
 
 </div>
 
 <script>
-    const URL_BASE = "https://juanterere.github.io/chipa-viajera";
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigoPostal = urlParams.get('postal');
+        const paraNombre = urlParams.get('para');
+        const mensajeTexto = urlParams.get('msg');
 
-    const albumesPaises = {
-        paraguay: {
-            bandera: "🇵🇾", nombre: "Paraguay",
-            postales: [{ id: "py_asuncion_costanera", lugar: "Asunción · Costanera" },
-                { id: "py_encarnacion_playa", lugar: "Encarnación · Playa" }
-            ]
-        },
-        festivos: {
-            bandera: "🎉", nombre: "Días Festivos",
-            postales: [
-                { id: "diadelpadre_primera", lugar: "Día del Padre" },
-                { id: "festivo_dia_madre",   lugar: "Día de la Madre" },
-                { id: "festivo_dia_hijo",    lugar: "Día del Niño" },
-                { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
-            ]
-        },
-        francia: {
-            bandera: "🇫🇷", nombre: "Francia",
-            postales: [
-                { id: "fr_paris_torre",     lugar: "París · Torre Eiffel" },
-                { id: "fr_paris_louvre",    lugar: "París · Museo del Louvre" },
-                { id: "fr_paris_concordia", lugar: "París · Plaza de la Concordia" },
-            ]
-        },
-        espana: {
-            bandera: "🇪🇸", nombre: "España",
-            postales: [
-                { id: "es_madrid_plazamayor",  lugar: "Madrid · Plaza Mayor" },
-                { id: "es_barcelona_sagrada",  lugar: "Barcelona · Sagrada Familia" },
-            ]
-        },
-        brasil: {
-            bandera: "🇧🇷", nombre: "Brasil",
-            postales: [
-                { id: "Br_Recife_Centro", lugar: "Recife · Centro" }
-            ]
-        },
-        dominicana: {
-            bandera: "🇩🇴", nombre: "República Dominicana",
-            postales: [
-                { id: "rd_santodomingo_alcazardecolon", lugar: "Santo Domingo · Alcázar de Colón" }
-            ]
+        if (codigoPostal) {
+            document.getElementById('postal-pantalla').src = `imagenes/${codigoPostal}.jpg`;
         }
+        if (paraNombre) {
+            document.getElementById('txt-para').innerText = paraNombre;
+        }
+        if (mensajeTexto) {
+            document.getElementById('txt-mensaje').innerText = `"${decodeURIComponent(mensajeTexto)}"`;
+        }
+
+        let visitas = localStorage.getItem('contador_postal_viajes');
+        if (!visitas) {
+            visitas = 1;
+        } else {
+            visitas = parseInt(visitas) + 1;
+        }
+        localStorage.setItem('contador_postal_viajes', visitas);
+        document.getElementById('info-contador').innerText = `📍 Sos el viajero N° ${visitas} en abrir esta postal en este dispositivo.`;
     };
 
-    const estampillas = [
-        { id: "Estampilla Azul", nombre: "Azul" },
-        { id: "Estampilla Mundial2026", nombre: "Mundial 2026" },
-        { id: "Estampilla Tatakua", nombre: "Tatakua" }
-    ];
-
-    let paisActivo          = "";
-    let postalSeleccionada  = "";
-    let estampillaActual    = "";
-
-    function inicializar() {
-        const menuPaises = document.getElementById('menu-paises');
-        Object.keys(albumesPaises).forEach(clave => {
-            const pais = albumesPaises[clave];
-            const btn = document.createElement('button');
-            btn.type = "button";
-            btn.className = "btn-pais";
-            btn.id = "pais-" + clave;
-            btn.innerHTML = pais.bandera + " " + pais.nombre;
-            btn.onclick = () => cargarAlbumPais(clave);
-            menuPaises.appendChild(btn);
-        });
-
-        const galeriaEst = document.getElementById('galeria-estampillas');
-        estampillas.forEach(est => {
-            const div = document.createElement('div');
-            div.className = "tarjeta-estampilla";
-            div.id = "est-" + est.id;
-            const rutaImg = "imagenes/" + est.id + ".png";
-            div.innerHTML = '<img src="' + rutaImg + '" alt="' + est.nombre + '" onerror="this.style.display=\'none\'"><span>' + est.nombre + '</span>';
-            div.onclick = () => seleccionarEstampilla(est.id);
-            galeriaEst.appendChild(div);
-        });
+    function irAInicio() {
+        window.location.href = "index.html";
     }
-
-    function actualizarPasos(pasoActivo) {
-        for (let i = 1; i <= 5; i++) {
-            const el = document.getElementById('paso' + i);
-            el.classList.remove('activo', 'completo');
-            if (i < pasoActivo)  el.classList.add('completo');
-            if (i === pasoActivo) el.classList.add('activo');
-        }
-    }
-
-    function cargarAlbumPais(clave) {
-        paisActivo = clave;
-        postalSeleccionada = "";
-
-        document.querySelectorAll('.btn-pais').forEach(btn => btn.classList.remove('activo'));
-        document.getElementById("pais-" + clave).classList.add('activo');
-
-        const contenedor = document.getElementById('contenedor-postales');
-        contenedor.innerHTML = "";
-        const pais = albumesPaises[clave];
-
-        pais.postales.forEach(postal => {
-            const rutaImgBase = "imagenes/" + postal.id;
-            const placeholder = "https://placehold.co/500x320/f4edd2/d97706?text=" + encodeURIComponent(postal.lugar);
-            
-            const div = document.createElement('div');
-            div.className = "tarjeta-postal animar";
-            
-            div.innerHTML = `
-                <img src="${rutaImgBase}.jpg" alt="${postal.lugar}" 
-                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='${rutaImgBase}.png'; } else if (this.src.indexOf('.png') !== -1) { this.src='${rutaImgBase}.jpeg'; } else { this.src='${placeholder}'; }">
-                <p>${postal.lugar}</p>
-            `;
-            div.onclick = () => seleccionarPostal(postal.id, rutaImgBase + '.jpg', placeholder, postal.lugar);
-            contenedor.appendChild(div);
-        });
-
-        document.getElementById('seccion-album').classList.remove('oculto');
-        actualizarPasos(2);
-    }
-
-    function seleccionarPostal(idPostal, rutaImg, placeholder, nombreLugar) {
-        postalSeleccionada = idPostal;
-
-        const imgGrande = document.getElementById('vista-postal-grande');
-        imgGrande.src = rutaImg;
-        imgGrande.alt = nombreLugar;
-        
-        imgGrande.onerror = function() { 
-            if(this.src.indexOf('.jpg') !== -1) { 
-                this.src = this.src.replace('.jpg', '.png'); 
-            } else { 
-                this.src = placeholder; 
-            } 
-        };
-
-        document.getElementById('bloque-seleccion').classList.add('oculto');
-        document.getElementById('bloque-personalizar').classList.remove('oculto');
-        document.getElementById('bloque-personalizar').classList.add('animar');
-
-        actualizarPasos(3);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function seleccionarEstampilla(idEst) {
-        estampillaActual = idEst;
-
-        document.querySelectorAll('.tarjeta-estampilla').forEach(t => t.classList.remove('activa'));
-        document.getElementById("est-" + idEst).classList.add('activa');
-
-        const imgEst = document.getElementById('estampilla-preview');
-        imgEst.src = "imagenes/" + idEst + ".png";
-        imgEst.classList.remove('oculto');
-
-        actualizarPasos(4);
-    }
-
-    function volverAlCatalogo() {
-        document.getElementById('bloque-personalizar').classList.add('oculto');
-        document.getElementById('bloque-seleccion').classList.remove('oculto');
-        actualizarPasos(paisActivo ? 2 : 1);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function obtenerDatosFormulario() {
-        const para    = document.getElementById('nombre-para').value.trim();
-        const de      = document.getElementById('nombre-de').value.trim();
-        const mensaje = document.getElementById('mensaje-dedicatoria').value.trim();
-
-        if (!postalSeleccionada) { alert("¡Seleccioná una postal primero!"); return null; }
-        if (!para)   { alert("¡Escribí el nombre de quien recibe la postal!"); return null; }
-        if (!mensaje){ alert("¡Escribí tu mensaje o dedicatoria!"); return null; }
-
-        return { para, de, mensaje };
-    }
-
-    function armarPayload(para, de, mensaje) {
-        return btoa(unescape(encodeURIComponent(JSON.stringify({
-            postal:     postalSeleccionada,
-            estampilla: estampillaActual,
-            para:       para,
-            de:         de,
-            msg:        mensaje
-        }))));
-    }
-
-    function enviarPorWhatsApp() {
-        const datos = obtenerDatosFormulario();
-        if (!datos) return;
-        const { para, de, mensaje } = datos;
-
-        const payload    = armarPayload(para, de, mensaje);
-        const urlPostal  = URL_BASE + '/ver.html?d=' + payload;
-
-        const deTexto = de ? de : '';
-        const textoWA =
-            'La Chipa Viajera te envió una postal!%0A%0A' +
-            '*' + para + '*, con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!%0A%0A' +
-            '"' + encodeURIComponent(mensaje) + '"%0A%0A' +
-            'Con cariño, *' + deTexto + '*%0A%0A' +
-            'Mirá tu postal acá:%0A' + encodeURIComponent(urlPostal);
-
-        actualizarPasos(5);
-        window.open('https://wa.me/?text=' + textoWA, '_blank');
-    }
-
-    function enviarPorEmail() {
-        const datos = obtenerDatosFormulario();
-        if (!datos) return;
-        const { para, de, mensaje } = datos;
-
-        const payload    = armarPayload(para, de, mensaje);
-        const urlPostal  = URL_BASE + '/ver.html?d=' + payload;
-
-        const asunto = encodeURIComponent('La Chipa Viajera te envió una postal!');
-        const deTexto = de ? de : '';
-        const cuerpoEmail = encodeURIComponent(
-            'La Chipa Viajera te envió una postal!\n\n' +
-            para + ', con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!\n\n' +
-            '"' + mensaje + '"\n\n' +
-            'Con cariño, ' + deTexto + '\n\n' +
-            'Mirá tu postal acá:\n' + urlPostal
-        );
-
-        actualizarPasos(5);
-        window.open('mailto:?subject=' + asunto + '&body=' + cuerpoEmail, '_self');
-    }
-
-    function probarVista() {
-        const datos = obtenerDatosFormulario();
-        if (!datos) return;
-        const { para, de, mensaje } = datos;
-
-        const payload = armarPayload(para, de, mensaje);
-        window.location.href = 'ver.html?d=' + payload + '&origen=preview';
-    }
-
-    inicializar();
 </script>
+
 </body>
 </html>
