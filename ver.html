@@ -15,20 +15,21 @@
         .carta-dedicatoria h2 { margin-top: 0; color: #d97706; font-size: 20px; }
         .carta-dedicatoria p.mensaje { font-style: italic; font-size: 16px; line-height: 1.5; color: #444; margin-bottom: 0; }
         
-        button.btn-crear { width: 100%; padding: 15px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        button.btn-crear { width: 100%; padding: 15px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
         button.btn-crear:hover { background-color: #b45309; }
 
-        /* NUEVOS ESTILOS: PROMOCIÓN DEL VIDEOJUEGO */
-        .banner-juego { display: block; width: 100%; text-decoration: none; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.15); margin: 20px 0; transition: transform 0.2s, box-shadow 0.2s; }
-        .banner-juego img { width: 100%; display: block; height: auto; }
-        .banner-juego:hover { transform: scale(1.02); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        /* RECUADRO COMPACTO ESTILO CATÁLOGO PARA EL JUEGO */
+        .tarjeta-juego-minisize { display: flex; align-items: center; gap: 15px; border: 2px solid #ccc; border-radius: 12px; overflow: hidden; text-decoration: none; background: #fafafa; padding: 10px; transition: 0.3s; margin-bottom: 15px; }
+        .tarjeta-juego-minisize img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; background-color: #f3f4f6; flex-shrink: 0; }
+        .tarjeta-juego-minisize p { margin: 0; font-size: 15px; font-weight: bold; color: #d97706; text-align: left; }
+        .tarjeta-juego-minisize:hover { border-color: #d97706; background: #fffdf5; }
 
-        /* NUEVOS ESTILOS: BOTÓN INSTAGRAM */
-        .btn-instagram { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; text-decoration: none; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; margin-top: 10px; }
-        .btn-instagram:hover { opacity: 0.9; transform: translateY(-1px); }
+        /* BOTÓN INSTAGRAM COMPACTO */
+        .btn-instagram { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; text-decoration: none; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .btn-instagram:hover { opacity: 0.9; }
 
-        button.btn-volver-test { width: 100%; padding: 10px; background-color: #9ca3af; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; }
-        button.btn-volver-test:hover { background-color: #7b818a; }
+        /* CONTADOR DE VISITAS */
+        .contador-visitas { font-size: 12px; color: #888; font-style: italic; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
     </style>
 </head>
 <body>
@@ -46,20 +47,24 @@
 
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 25px 0;">
 
-    <!-- BOTÓN ORIGINAL: CREAR POSTAL -->
+    <!-- BOTÓN: CREAR POSTAL -->
     <button class="btn-crear" onclick="irAInicio()">📮 ¡Crear mi propia postal gratis!</button>
 
-    <!-- NUEVO ACCESO: BANNER IMAGEN PARA EL VIDEOJUEGO -->
-    <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="banner-juego" title="¡Jugar a la Chipa Fugitiva!">
-        <img src="imagenes/publi_juego_chipa.jpg" alt="Prueba el juego Chipa Fugitiva - Juan Tereré" onerror="this.src='https://placehold.co/550x250?text=¡Jugar+al+Videojuego+de+la+Chipa!'">
+    <!-- RECUADRO COMPACTO PARA EL VIDEOJUEGO -->
+    <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="tarjeta-juego-minisize" title="¡Jugá al juego de la Chipa Viajera!">
+        <img src="imagenes/publi_juego_chipa.jpg" alt="Chipa Fugitiva" onerror="this.src='https://placehold.co/100x100?text=Juego'">
+        <p>🎮 ¡Jugá al juego de la Chipa Viajera!</p>
     </a>
 
-    <!-- NUEVO ACCESO: BOTÓN INSTAGRAM SEGUIDORES -->
+    <!-- BOTÓN INSTAGRAM -->
     <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
         📸 Seguir a Juan Tereré en Instagram
     </a>
-    
-    <button class="btn-volver-test" onclick="irAInicio()">⬅️ Volver a la pantalla de creación</button>
+
+    <!-- SECCIÓN DEL CONTADOR AUTOMÁTICO -->
+    <div class="contador-visitas" id="info-contador">
+        Cargando estadísticas de viaje...
+    </div>
 
 </div>
 
@@ -79,6 +84,16 @@
         if (mensajeTexto) {
             document.getElementById('txt-mensaje').innerText = `"${decodeURIComponent(mensajeTexto)}"`;
         }
+
+        // LÓGICA DEL CONTADOR DE VISITAS LOCAL
+        let visitas = localStorage.getItem('contador_postal_viajes');
+        if (!visitas) {
+            visitas = 1; // Primera visita simulada
+        } else {
+            visitas = parseInt(visitas) + 1;
+        }
+        localStorage.setItem('contador_postal_viajes', visitas);
+        document.getElementById('info-contador').innerText = `📍 Sos el viajero N° ${visitas} en abrir esta postal en este dispositivo.`;
     };
 
     function irAInicio() {
