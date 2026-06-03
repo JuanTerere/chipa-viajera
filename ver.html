@@ -9,10 +9,32 @@
         body { font-family: 'Arial', sans-serif; background-color: #f4edd2; text-align: center; padding: 20px; color: #333; margin: 0; }
         .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
 
-        /* POSTAL PRINCIPAL */
-        .postal-container { width: 100%; margin-bottom: 20px; }
+        /* POSTAL PRINCIPAL Y ESTAMPILLA FLOTANTE */
+        .postal-container { width: 100%; position: relative; margin-bottom: 12px; }
         .postal-imagen { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .postal-placeholder { width: 100%; min-height: 200px; background: #f3f4f6; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; }
+        
+        .estampilla-tech {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 75px;
+            height: auto;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        .estampilla-tech:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* NUEVO: BLOQUE DE BOTONES PARA LA POSTAL (DESCARGAR Y COMPARTIR) */
+        .postal-acciones { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-accion { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: 0.2s; }
+        .btn-bajar { background-color: #ffffff; color: #d97706; border: 2px solid #d97706; }
+        .btn-bajar:hover { background-color: #fffdf5; }
+        .btn-compartir { background-color: #3b82f6; color: white; border: none; box-shadow: 0 4px 6px rgba(59,130,246,0.2); }
+        .btn-compartir:hover { background-color: #2563eb; }
 
         /* CARTA DEDICATORIA */
         .carta-dedicatoria { background: #faf8f0; border-left: 5px solid #d97706; padding: 20px; border-radius: 0 10px 10px 0; text-align: left; margin: 20px 0; }
@@ -24,7 +46,7 @@
         button.btn-crear { width: 100%; padding: 15px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; }
         button.btn-crear:hover { background-color: #b45309; }
 
-        /* TARJETA ESTILO BIBLIOTECA */
+        /* TARJETA COMPACTA VIDEOJUEGO */
         .tarjeta-promo { display: flex; gap: 15px; align-items: flex-start; background: #fffdf5; border: 1px solid #e8dfc0; border-radius: 14px; padding: 15px; text-align: left; margin-bottom: 15px; }
         .tarjeta-promo img { width: 85px; height: 105px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: #f3f4f6; }
         .tarjeta-promo-info { flex: 1; }
@@ -47,17 +69,30 @@
 
 <div class="container">
 
-    <!-- POSTAL -->
+    <!-- POSTAL INTERACTIVA CON ESTAMPILLA -->
     <div class="postal-container">
         <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje"
              onerror="this.style.display='none'; document.getElementById('postal-placeholder').style.display='flex';">
         <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Postal no disponible</div>
+        
+        <img id="estampilla-pantalla" src="" class="estampilla-tech" alt="Estampilla Digital" style="display: none;"
+             onerror="this.style.display='none';">
+    </div>
+
+    <!-- NUEVO: BOTONES DE ACCIÓN DIRECTA -->
+    <div class="postal-acciones">
+        <a id="link-descargar" href="#" target="_blank" class="btn-accion btn-bajar">
+            📥 Guardar Imagen
+        </a>
+        <button id="btn-compartir-nativo" onclick="compartirPostal()" class="btn-accion btn-compartir">
+            🔗 Compartir Link
+        </button>
     </div>
 
     <!-- CARTA DEDICATORIA -->
     <div class="carta-dedicatoria">
         <h2>¡Hola, <span id="txt-para">viajero</span>! 👋✈️</h2>
-        <div class="etiqueta-de">Mensaje especial para vos:</div>
+        <div class="etiqueta-de" id="bloque-de">Mensaje especial para vos:</div>
         <p class="mensaje" id="txt-mensaje">Te enviaron un saludo especial desde el recorrido de La Chipa Viajera.</p>
     </div>
 
@@ -92,20 +127,59 @@
 </div>
 
 <script>
+    // Variable global para almacenar la ruta de la imagen final
+    let rutaImagenDescarga = "";
+
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const codigoPostal = urlParams.get('postal');
-        const paraNombre   = urlParams.get('para');
-        const mensajeTexto = urlParams.get('msg');
+        const payloadData = urlParams.get('d');[cite: 4]
 
-        if (codigoPostal) {
-            document.getElementById('postal-pantalla').src = 'imagenes/' + codigoPostal + '.jpg';
-        }
-        if (paraNombre) {
-            document.getElementById('txt-para').innerText = decodeURIComponent(paraNombre);
-        }
-        if (mensajeTexto) {
-            document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(mensajeTexto) + '"';
+        if (payloadData) {
+            try {
+                const jsonString = decodeURIComponent(escape(atob(payloadData)));
+                const datos = JSON.parse(jsonString);
+
+                if (datos.postal) {
+                    const imgPostal = document.getElementById('postal-pantalla');
+                    rutaImagenDescarga = 'imagenes/' + datos.postal + '.jpg';
+                    imgPostal.src = rutaImagenDescarga;
+                    document.getElementById('link-descargar').href = rutaImagenDescarga;
+                    
+                    imgPostal.onerror = function() {
+                        if (this.src.indexOf('.jpg') !== -1) {
+                            rutaImagenDescarga = 'imagenes/' + datos.postal + '.png';
+                            this.src = rutaImagenDescarga;
+                            document.getElementById('link-descargar').href = rutaImagenDescarga;
+                        } else {
+                            this.style.display = 'none';
+                            document.getElementById('postal-placeholder').style.display = 'flex';
+                        }
+                    };
+                }
+
+                if (datos.estampilla) {
+                    const imgEstampilla = document.getElementById('estampilla-pantalla');
+                    imgEstampilla.src = 'imagenes/' + datos.estampilla + '.png';
+                    imgEstampilla.style.display = 'block';
+                }
+
+                if (datos.para) {
+                    document.getElementById('txt-para').innerText = datos.para;
+                }
+                
+                if (datos.de) {
+                    document.getElementById('bloque-de').innerText = 'De parte de ' + datos.de + ':';
+                } else {
+                    document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
+                }
+
+                if (datos.msg) {
+                    document.getElementById('txt-mensaje').innerText = '"' + datos.msg + '"';
+                }
+
+            } catch (e) {
+                console.error("Error al decodificar los datos:", e);
+            }
         }
 
         let visitas = localStorage.getItem('contador_postal_viajes');
@@ -113,6 +187,21 @@
         localStorage.setItem('contador_postal_viajes', visitas);
         document.getElementById('info-contador').innerText = '📍 Sos el viajero N° ' + visitas + ' en abrir esta postal en este dispositivo.';
     };
+
+    // NUEVA FUNCIÓN: COMPARTIR UTILIZANDO EL MENÚ NATIVO DEL TELÉFONO
+    function compartirPostal() {
+        if (navigator.share) {
+            navigator.share({
+                title: '¡Te llegó una Postal Viajera! 📮',
+                text: 'Mirá la postal que te enviaron de La Chipa Viajera',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            // Salvavidas por si abren desde una PC de escritorio sin menú de compartir
+            navigator.clipboard.writeText(window.location.href);
+            alert("¡Enlace copiado al portapapeles! Ya podés pegarlo donde quieras.");
+        }
+    }
 
     function irAInicio() {
         window.location.href = "index.html";
