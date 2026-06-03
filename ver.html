@@ -69,17 +69,13 @@
 
 <div class="container">
 
-    <!-- POSTAL INTERACTIVA CON ESTAMPILLA -->
     <div class="postal-container">
-        <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje"
-             onerror="verificarErrorImagen(this);">
+        <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje" onerror="corregirRutaPostal(this);">
         <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Postal no disponible</div>
         
-        <img id="estampilla-pantalla" src="" class="estampilla-tech" alt="Estampilla Digital" style="display: none;"
-             onerror="verificarErrorEstampilla(this);">
+        <img id="estampilla-pantalla" src="imagenes/Estampilla EmprendeTECH.png" class="estampilla-tech" alt="Estampilla Digital" onerror="this.src='imágenes/Estampilla EmprendeTECH.png'; this.onerror=function(){this.style.display='none';};">
     </div>
 
-    <!-- BOTONES DE ACCIÓN DIRECTA -->
     <div class="postal-acciones">
         <a id="link-descargar" href="#" target="_blank" class="btn-accion btn-bajar">
             📥 Guardar Imagen
@@ -89,7 +85,6 @@
         </button>
     </div>
 
-    <!-- CARTA DEDICATORIA -->
     <div class="carta-dedicatoria">
         <h2>¡Hola, <span id="txt-para">viajero</span>! 👋✈️</h2>
         <div class="etiqueta-de" id="bloque-de">Mensaje especial para vos:</div>
@@ -98,13 +93,10 @@
 
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
 
-    <!-- BOTÓN CREAR POSTAL -->
     <button class="btn-crear" onclick="irAInicio()">📮 ¡Crear mi propia postal gratis!</button>
 
-    <!-- TARJETA VIDEOJUEGO -->
     <div class="tarjeta-promo">
-        <img id="img-publi-juego" src="imágenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego"
-             onerror="this.onerror=null; this.src='imagenes/publi_juego_chipa.jpg';">
+        <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego" onerror="this.src='imágenes/publi_juego_chipa.jpg'; this.onerror=function(){this.src='https://placehold.co/85x105/7c3aed/white?text=Juego';};">
         <div class="tarjeta-promo-info">
             <h3>La Chipa Viajera</h3>
             <span class="tarjeta-promo-badge badge-juego">🎮 VIDEO JUEGO</span>
@@ -115,7 +107,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN INSTAGRAM -->
     <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
         📸 Seguir a Juan Tereré en Instagram
     </a>
@@ -127,87 +118,62 @@
 </div>
 
 <script>
-    let nombrePostal = "";
-    let nombreEstampilla = "";
+    let idPostal = "";
 
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const payloadData = urlParams.get('d');[cite: 4]
         
-        let postal = urlParams.get('postal');[cite: 5]
-        let estampilla = urlParams.get('estampilla');
-        let para = urlParams.get('para');[cite: 5]
-        let de = urlParams.get('de');
-        let msg = urlParams.get('msg');[cite: 5]
+        // CAPTURA DIRECTA DE VARIABLES SUELTAS (TAL CUAL LO ENVÍA TU INDEX)
+        idPostal = urlParams.get('postal');
+        let paraNombre = urlParams.get('para');
+        let deNombre = urlParams.get('de');
+        let mensajeTexto = urlParams.get('msg');
 
-        if (payloadData) {
-            try {
-                const jsonString = decodeURIComponent(escape(atob(payloadData)));
-                const datos = JSON.parse(jsonString);
-                postal = datos.postal;
-                estampilla = datos.estampilla;
-                para = datos.para;
-                de = datos.de;
-                msg = datos.msg;
-            } catch (e) {
-                console.error("Error al decodificar datos en Base64:", e);
-            }
+        // Asignación de Textos a la pantalla
+        if (paraNombre) {
+            document.getElementById('txt-para').innerText = decodeURIComponent(paraNombre);
         }
-
-        // Cargar datos de texto
-        if (para) document.getElementById('txt-para').innerText = decodeURIComponent(para);[cite: 5]
-        if (de) {
-            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(de) + ':';
+        
+        if (deNombre) {
+            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(deNombre) + ':';
         } else {
             document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
         }
-        if (msg) document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg) + '"';[cite: 5]
 
-        // Guardar nombres globales para el manejador de errores de rutas
-        nombrePostal = postal;
-        nombreEstampilla = estampilla;
+        if (mensajeTexto) {
+            document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(mensajeTexto) + '"';
+        }
 
-        // Intentar cargar la postal primero con la ruta "imágenes/" y extensión ".jpg"
-        if (postal) {
+        // Intento de carga inicial de la postal en la ruta estándar
+        if (idPostal) {
             const imgPostal = document.getElementById('postal-pantalla');
-            imgPostal.src = 'imágenes/' + postal + '.jpg';
-            document.getElementById('link-descargar').href = 'imágenes/' + postal + '.jpg';
+            imgPostal.src = 'imagenes/' + idPostal + '.jpg';
+            document.getElementById('link-descargar').href = 'imagenes/' + idPostal + '.jpg';
+        } else {
+            document.getElementById('postal-placeholder').style.display = 'flex';
+            document.getElementById('postal-pantalla').style.display = 'none';
         }
 
-        if (estampilla) {
-            const imgEstampilla = document.getElementById('estampilla-pantalla');
-            imgEstampilla.src = 'imágenes/' + estampilla + '.png';
-            imgEstampilla.style.display = 'block';
-        }
-
-        // CONTADOR
+        // LÓGICA DEL CONTADOR DE VISITAS
         let visitas = localStorage.getItem('contador_postal_viajes');
         visitas = visitas ? parseInt(visitas) + 1 : 1;
         localStorage.setItem('contador_postal_viajes', visitas);
         document.getElementById('info-contador').innerText = '📍 Sos el viajero N° ' + visitas + ' en abrir esta postal en este dispositivo.';
     };
 
-    // Buscador automático de rutas alternativas por si GitHub se marea con las tildes de las carpetas
-    function verificarErrorImagen(img) {
-        if (img.src.includes('imágenes/') && img.src.includes('.jpg')) {
-            img.src = 'imágenes/' + nombrePostal + '.png';
-        } else if (img.src.includes('imágenes/') && img.src.includes('.png')) {
-            img.src = 'imagenes/' + nombrePostal + '.jpg';
-        } else if (img.src.includes('imagenes/') && img.src.includes('.jpg')) {
-            img.src = 'imagenes/' + nombrePostal + '.png';
+    // FUNCIÓN SALVAVIDAS POR SI GITHUB SE PUNTEA CON LAS TILDES O EXTENSIONES
+    function corregirRutaPostal(img) {
+        if (img.src.includes('imagenes/') && img.src.includes('.jpg')) {
+            img.src = 'imagenes/' + idPostal + '.png';
+        } else if (img.src.includes('imagenes/') && img.src.includes('.png')) {
+            img.src = 'imágenes/' + idPostal + '.jpg';
+        } else if (img.src.includes('imágenes/') && img.src.includes('.jpg')) {
+            img.src = 'imágenes/' + idPostal + '.png';
         } else {
             img.style.display = 'none';
             document.getElementById('postal-placeholder').style.display = 'flex';
         }
         document.getElementById('link-descargar').href = img.src;
-    }
-
-    function verificarErrorEstampilla(img) {
-        if (img.src.includes('imágenes/')) {
-            img.src = 'imagenes/' + nombreEstampilla + '.png';
-        } else {
-            img.style.display = 'none';
-        }
     }
 
     function compartirPostal() {
