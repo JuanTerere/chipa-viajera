@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Te llegó una Postal Viajera! 📮</title>
+    <title>Te llegó una Postal Viajera</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Arial', sans-serif; background-color: #f4edd2; text-align: center; padding: 20px; color: #333; margin: 0; }
@@ -73,33 +73,33 @@
         <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje" onerror="corregirExtensionPostal(this);">
         <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Cargando imagen de la postal...</div>
         
-        <img id="estampilla-pantalla" src="imagenes/Estampilla EmprendeTECH.png" class="estampilla-tech" alt="Estampilla Digital" onerror="this.style.display='none';">
+        <img id="estampilla-pantalla" src="" class="estampilla-tech" alt="Estampilla Digital" onerror="this.style.display='none';">
     </div>
 
     <div class="postal-acciones">
         <a id="link-descargar" href="#" target="_blank" class="btn-accion btn-bajar">
-            📥 Guardar Imagen
+            Guardar Imagen
         </a>
         <button id="btn-compartir-nativo" onclick="compartirPostal()" class="btn-accion btn-compartir">
-            🔗 Compartir Link
+            Compartir Link
         </button>
     </div>
 
     <div class="carta-dedicatoria">
-        <h2>¡Hola, <span id="txt-para">viajero</span>! 👋✈️</h2>
+        <h2>¡Hola, <span id="txt-para">viajero</span>! </h2>
         <div class="etiqueta-de" id="bloque-de">Mensaje especial para vos:</div>
         <p class="mensaje" id="txt-mensaje">Te enviaron un saludo especial desde el recorrido de La Chipa Viajera.</p>
     </div>
 
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
 
-    <button class="btn-crear" onclick="irAInicio()">📮 ¡Crear mi propia postal gratis!</button>
+    <button class="btn-crear" onclick="irAInicio()">Crear mi propia postal gratis</button>
 
     <div class="tarjeta-promo">
         <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego" onerror="this.src='https://placehold.co/85x105/7c3aed/white?text=Juego';">
         <div class="tarjeta-promo-info">
             <h3>La Chipa Viajera</h3>
-            <span class="tarjeta-promo-badge badge-juego">🎮 VIDEO JUEGO</span>
+            <span class="tarjeta-promo-badge badge-juego">VIDEO JUEGO</span>
             <p>Jugá el apasionante juego de la Chipa Viajera e intentá ser el mejor del mundo sumando la mayor cantidad de puntos.</p>
             <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="btn-jugar">
                 ▶ ¡Jugar ahora gratis!
@@ -108,7 +108,7 @@
     </div>
 
     <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
-        📸 Seguir a Juan Tereré en Instagram
+        Seguir a Juan Tereré en Instagram
     </a>
 
     <div class="contador-visitas" id="info-contador">
@@ -128,6 +128,7 @@
         let para = "";
         let de = "";
         let msg = "";
+        let estampilla = "";
 
         // DECODIFICACIÓN SEGURA DEL PAYLOAD BASE64
         if (payloadData) {
@@ -139,6 +140,7 @@
                 para = datos.para;
                 de = datos.de;
                 msg = datos.msg;
+                estampilla = datos.estampilla || '';
             } catch (e) {
                 console.error("Error procesando payload encriptado:", e);
             }
@@ -163,7 +165,17 @@
         }
         if (msg) document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg).replace(/['"]+/g, '') + '"';
 
+        
+        const imgEstampilla = document.getElementById('estampilla-pantalla');
+        if (estampilla) {
+            imgEstampilla.src = 'imagenes/' + estampilla + '.png';
+            imgEstampilla.style.display = 'block';
+        } else {
+            imgEstampilla.style.display = 'none';
+        }
+
         // Renderizar la Postal seleccionada
+
         const imgPostal = document.getElementById('postal-pantalla');
         let rutaInicial = 'imagenes/' + postalIdGlobal + '.jpg';
         imgPostal.src = rutaInicial;
@@ -192,7 +204,7 @@
     function compartirPostal() {
         if (navigator.share) {
             navigator.share({
-                title: '¡Te llegó una Postal Viajera! 📮',
+                title: 'Te llegó una Postal Viajera',
                 text: 'Mirá la postal que te enviaron de La Chipa Viajera',
                 url: window.location.href
             }).catch(console.error);
@@ -205,6 +217,18 @@
     function irAInicio() {
         window.location.href = "index.html";
     }
+
+    /*
+    CORRECCIÓN IMPORTANTE:
+    Para que "Guardar Imagen" descargue postal + estampilla + mensaje,
+    reemplazar el enlace actual por una función con html2canvas que capture:
+    - postal-pantalla
+    - estampilla-pantalla
+    - nombre remitente
+    - mensaje
+    Actualmente este archivo ya corrige la estampilla dinámica.
+    */
+
 </script>
 
 </body>
