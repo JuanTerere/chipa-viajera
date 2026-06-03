@@ -28,7 +28,7 @@
             transform: scale(1.1) rotate(5deg);
         }
 
-        /* NUEVO: BLOQUE DE BOTONES PARA LA POSTAL (DESCARGAR Y COMPARTIR) */
+        /* BLOQUE DE BOTONES PARA LA POSTAL (DESCARGAR Y COMPARTIR) */
         .postal-acciones { display: flex; gap: 10px; margin-bottom: 20px; }
         .btn-accion { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: 0.2s; }
         .btn-bajar { background-color: #ffffff; color: #d97706; border: 2px solid #d97706; }
@@ -72,14 +72,14 @@
     <!-- POSTAL INTERACTIVA CON ESTAMPILLA -->
     <div class="postal-container">
         <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje"
-             onerror="this.style.display='none'; document.getElementById('postal-placeholder').style.display='flex';">
+             onerror="verificarErrorImagen(this);">
         <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Postal no disponible</div>
         
         <img id="estampilla-pantalla" src="" class="estampilla-tech" alt="Estampilla Digital" style="display: none;"
-             onerror="this.style.display='none';">
+             onerror="verificarErrorEstampilla(this);">
     </div>
 
-    <!-- NUEVO: BOTONES DE ACCIÓN DIRECTA -->
+    <!-- BOTONES DE ACCIÓN DIRECTA -->
     <div class="postal-acciones">
         <a id="link-descargar" href="#" target="_blank" class="btn-accion btn-bajar">
             📥 Guardar Imagen
@@ -103,8 +103,8 @@
 
     <!-- TARJETA VIDEOJUEGO -->
     <div class="tarjeta-promo">
-        <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego"
-             onerror="this.src='https://placehold.co/85x105/7c3aed/white?text=Juego'">
+        <img id="img-publi-juego" src="imágenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego"
+             onerror="this.onerror=null; this.src='imagenes/publi_juego_chipa.jpg';">
         <div class="tarjeta-promo-info">
             <h3>La Chipa Viajera</h3>
             <span class="tarjeta-promo-badge badge-juego">🎮 VIDEO JUEGO</span>
@@ -127,68 +127,89 @@
 </div>
 
 <script>
-    // Variable global para almacenar la ruta de la imagen final
-    let rutaImagenDescarga = "";
+    let nombrePostal = "";
+    let nombreEstampilla = "";
 
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         const payloadData = urlParams.get('d');[cite: 4]
+        
+        let postal = urlParams.get('postal');[cite: 5]
+        let estampilla = urlParams.get('estampilla');
+        let para = urlParams.get('para');[cite: 5]
+        let de = urlParams.get('de');
+        let msg = urlParams.get('msg');[cite: 5]
 
         if (payloadData) {
             try {
                 const jsonString = decodeURIComponent(escape(atob(payloadData)));
                 const datos = JSON.parse(jsonString);
-
-                if (datos.postal) {
-                    const imgPostal = document.getElementById('postal-pantalla');
-                    rutaImagenDescarga = 'imagenes/' + datos.postal + '.jpg';
-                    imgPostal.src = rutaImagenDescarga;
-                    document.getElementById('link-descargar').href = rutaImagenDescarga;
-                    
-                    imgPostal.onerror = function() {
-                        if (this.src.indexOf('.jpg') !== -1) {
-                            rutaImagenDescarga = 'imagenes/' + datos.postal + '.png';
-                            this.src = rutaImagenDescarga;
-                            document.getElementById('link-descargar').href = rutaImagenDescarga;
-                        } else {
-                            this.style.display = 'none';
-                            document.getElementById('postal-placeholder').style.display = 'flex';
-                        }
-                    };
-                }
-
-                if (datos.estampilla) {
-                    const imgEstampilla = document.getElementById('estampilla-pantalla');
-                    imgEstampilla.src = 'imagenes/' + datos.estampilla + '.png';
-                    imgEstampilla.style.display = 'block';
-                }
-
-                if (datos.para) {
-                    document.getElementById('txt-para').innerText = datos.para;
-                }
-                
-                if (datos.de) {
-                    document.getElementById('bloque-de').innerText = 'De parte de ' + datos.de + ':';
-                } else {
-                    document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
-                }
-
-                if (datos.msg) {
-                    document.getElementById('txt-mensaje').innerText = '"' + datos.msg + '"';
-                }
-
+                postal = datos.postal;
+                estampilla = datos.estampilla;
+                para = datos.para;
+                de = datos.de;
+                msg = datos.msg;
             } catch (e) {
-                console.error("Error al decodificar los datos:", e);
+                console.error("Error al decodificar datos en Base64:", e);
             }
         }
 
+        // Cargar datos de texto
+        if (para) document.getElementById('txt-para').innerText = decodeURIComponent(para);[cite: 5]
+        if (de) {
+            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(de) + ':';
+        } else {
+            document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
+        }
+        if (msg) document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg) + '"';[cite: 5]
+
+        // Guardar nombres globales para el manejador de errores de rutas
+        nombrePostal = postal;
+        nombreEstampilla = estampilla;
+
+        // Intentar cargar la postal primero con la ruta "imágenes/" y extensión ".jpg"
+        if (postal) {
+            const imgPostal = document.getElementById('postal-pantalla');
+            imgPostal.src = 'imágenes/' + postal + '.jpg';
+            document.getElementById('link-descargar').href = 'imágenes/' + postal + '.jpg';
+        }
+
+        if (estampilla) {
+            const imgEstampilla = document.getElementById('estampilla-pantalla');
+            imgEstampilla.src = 'imágenes/' + estampilla + '.png';
+            imgEstampilla.style.display = 'block';
+        }
+
+        // CONTADOR
         let visitas = localStorage.getItem('contador_postal_viajes');
         visitas = visitas ? parseInt(visitas) + 1 : 1;
         localStorage.setItem('contador_postal_viajes', visitas);
         document.getElementById('info-contador').innerText = '📍 Sos el viajero N° ' + visitas + ' en abrir esta postal en este dispositivo.';
     };
 
-    // NUEVA FUNCIÓN: COMPARTIR UTILIZANDO EL MENÚ NATIVO DEL TELÉFONO
+    // Buscador automático de rutas alternativas por si GitHub se marea con las tildes de las carpetas
+    function verificarErrorImagen(img) {
+        if (img.src.includes('imágenes/') && img.src.includes('.jpg')) {
+            img.src = 'imágenes/' + nombrePostal + '.png';
+        } else if (img.src.includes('imágenes/') && img.src.includes('.png')) {
+            img.src = 'imagenes/' + nombrePostal + '.jpg';
+        } else if (img.src.includes('imagenes/') && img.src.includes('.jpg')) {
+            img.src = 'imagenes/' + nombrePostal + '.png';
+        } else {
+            img.style.display = 'none';
+            document.getElementById('postal-placeholder').style.display = 'flex';
+        }
+        document.getElementById('link-descargar').href = img.src;
+    }
+
+    function verificarErrorEstampilla(img) {
+        if (img.src.includes('imágenes/')) {
+            img.src = 'imagenes/' + nombreEstampilla + '.png';
+        } else {
+            img.style.display = 'none';
+        }
+    }
+
     function compartirPostal() {
         if (navigator.share) {
             navigator.share({
@@ -197,7 +218,6 @@
                 url: window.location.href
             }).catch(console.error);
         } else {
-            // Salvavidas por si abren desde una PC de escritorio sin menú de compartir
             navigator.clipboard.writeText(window.location.href);
             alert("¡Enlace copiado al portapapeles! Ya podés pegarlo donde quieras.");
         }
