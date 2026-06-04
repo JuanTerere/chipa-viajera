@@ -3,61 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Te llegó una Postal Viajera</title>
+    <title>Te llego una Postal Viajera!</title>
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Arial', sans-serif; background-color: #f4edd2; text-align: center; padding: 20px; color: #333; margin: 0; }
         .container { max-width: 550px; margin: 0 auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
 
-        /* POSTAL PRINCIPAL Y ESTAMPILLA FLOTANTE */
-        .postal-container { width: 100%; position: relative; margin-bottom: 12px; }
+        /* POSTAL PRINCIPAL */
+        .postal-wrap { position: relative; width: 100%; margin-bottom: 20px; }
         .postal-imagen { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .postal-placeholder { width: 100%; min-height: 250px; background: #f3f4f6; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 14px; border: 2px dashed #ccc; }
-        
-        .estampilla-tech {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            width: 80px;
-            height: auto;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-            transition: transform 0.3s ease;
-            z-index: 10;
-        }
-        .estampilla-tech:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        /* BLOQUE DE BOTONES PARA LA POSTAL (DESCARGAR Y COMPARTIR) */
-        .postal-acciones { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-accion { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: 0.2s; }
-        .btn-bajar { background-color: #ffffff; color: #d97706; border: 2px solid #d97706; }
-        .btn-bajar:hover { background-color: #fffdf5; }
-        .btn-compartir { background-color: #3b82f6; color: white; border: none; box-shadow: 0 4px 6px rgba(59,130,246,0.2); }
-        .btn-compartir:hover { background-color: #2563eb; }
+        .estampilla-sobre-postal { position: absolute; top: 16px; right: 18px; width: 64px; height: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); pointer-events: none; }
 
         /* CARTA DEDICATORIA */
         .carta-dedicatoria { background: #faf8f0; border-left: 5px solid #d97706; padding: 20px; border-radius: 0 10px 10px 0; text-align: left; margin: 20px 0; }
         .carta-dedicatoria h2 { margin-top: 0; color: #d97706; font-size: 20px; }
-        .carta-dedicatoria .etiqueta-de { font-size: 12px; color: #999; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .carta-dedicatoria p.mensaje { font-style: italic; font-size: 16px; line-height: 1.6; color: #444; margin: 0; background: white; border-radius: 8px; padding: 12px 15px; border: 1px dashed #e5c97e; }
+        .carta-dedicatoria .etiqueta { font-size: 11px; color: #999; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .carta-dedicatoria p.mensaje { font-style: italic; font-size: 16px; line-height: 1.6; color: #444; margin: 0 0 12px 0; background: white; border-radius: 8px; padding: 12px 15px; border: 1px dashed #e5c97e; }
+        .carta-dedicatoria .firma { font-size: 14px; color: #888; text-align: right; }
 
-        /* BOTÓN CREAR */
+        /* BOTON CREAR */
         button.btn-crear { width: 100%; padding: 15px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; }
         button.btn-crear:hover { background-color: #b45309; }
 
-        /* TARJETA COMPACTA VIDEOJUEGO */
+        /* TARJETA JUEGO */
         .tarjeta-promo { display: flex; gap: 15px; align-items: flex-start; background: #fffdf5; border: 1px solid #e8dfc0; border-radius: 14px; padding: 15px; text-align: left; margin-bottom: 15px; }
         .tarjeta-promo img { width: 85px; height: 105px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: #f3f4f6; }
         .tarjeta-promo-info { flex: 1; }
         .tarjeta-promo-info h3 { margin: 0 0 2px 0; font-size: 16px; color: #222; }
-        .tarjeta-promo-badge { display: inline-block; font-size: 10px; font-weight: bold; letter-spacing: 0.5px; color: white; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; }
-        .badge-juego { background: #7c3aed; }
+        .tarjeta-promo-badge { display: inline-block; font-size: 10px; font-weight: bold; letter-spacing: 0.5px; color: white; padding: 3px 8px; border-radius: 4px; margin-bottom: 8px; background: #7c3aed; }
         .tarjeta-promo-info p { font-size: 13px; color: #666; margin: 0 0 12px 0; line-height: 1.4; }
         .btn-jugar { display: block; width: 100%; padding: 9px; background: #7c3aed; color: white; border: none; border-radius: 7px; font-size: 13px; font-weight: bold; text-decoration: none; text-align: center; cursor: pointer; }
         .btn-jugar:hover { background: #6d28d9; }
 
-        /* BOTÓN INSTAGRAM */
+        /* BOTON INSTAGRAM */
         .btn-instagram { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; text-decoration: none; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .btn-instagram:hover { opacity: 0.9; }
 
@@ -69,166 +47,90 @@
 
 <div class="container">
 
-    <div class="postal-container">
-        <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje" onerror="corregirExtensionPostal(this);">
-        <div id="postal-placeholder" class="postal-placeholder" style="display:none;">📮 Cargando imagen de la postal...</div>
-        
-        <img id="estampilla-pantalla" src="" class="estampilla-tech" alt="Estampilla Digital" onerror="this.style.display='none';">
+    <!-- POSTAL + ESTAMPILLA -->
+    <div class="postal-wrap">
+        <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje">
+        <img id="estampilla-overlay" src="" class="estampilla-sobre-postal" alt="Estampilla" style="display:none">
     </div>
 
-    <div class="postal-acciones">
-        <a id="link-descargar" href="#" target="_blank" class="btn-accion btn-bajar">
-            Guardar Imagen
-        </a>
-        <button id="btn-compartir-nativo" onclick="compartirPostal()" class="btn-accion btn-compartir">
-            Compartir Link
-        </button>
-    </div>
-
+    <!-- CARTA DEDICATORIA -->
     <div class="carta-dedicatoria">
-        <h2>¡Hola, <span id="txt-para">viajero</span>! </h2>
-        <div class="etiqueta-de" id="bloque-de">Mensaje especial para vos:</div>
+        <h2>Hola, <span id="txt-para">viajero</span>!</h2>
+        <div class="etiqueta">Mensaje especial para vos:</div>
         <p class="mensaje" id="txt-mensaje">Te enviaron un saludo especial desde el recorrido de La Chipa Viajera.</p>
+        <div class="firma" id="txt-firma"></div>
     </div>
 
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
 
+    <!-- BOTON CREAR POSTAL -->
     <button class="btn-crear" onclick="irAInicio()">Crear mi propia postal gratis</button>
 
+    <!-- TARJETA VIDEOJUEGO -->
     <div class="tarjeta-promo">
-        <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego" onerror="this.src='https://placehold.co/85x105/7c3aed/white?text=Juego';">
+        <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego"
+             onerror="this.src='https://placehold.co/85x105/7c3aed/white?text=Juego'">
         <div class="tarjeta-promo-info">
             <h3>La Chipa Viajera</h3>
-            <span class="tarjeta-promo-badge badge-juego">VIDEO JUEGO</span>
-            <p>Jugá el apasionante juego de la Chipa Viajera e intentá ser el mejor del mundo sumando la mayor cantidad de puntos.</p>
+            <span class="tarjeta-promo-badge">VIDEO JUEGO</span>
+            <p>Juga el apasionante juego de la Chipa Viajera e intenta ser el mejor del mundo sumando la mayor cantidad de puntos.</p>
             <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="btn-jugar">
-                ▶ ¡Jugar ahora gratis!
+                Jugar ahora gratis
             </a>
         </div>
     </div>
 
+    <!-- BOTON INSTAGRAM -->
     <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
-        Seguir a Juan Tereré en Instagram
+        Seguir a Juan Terere en Instagram
     </a>
 
     <div class="contador-visitas" id="info-contador">
-        Cargando estadísticas de viaje...
+        Cargando estadisticas de viaje...
     </div>
 
 </div>
 
 <script>
-    let postalIdGlobal = "";
-
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const payloadData = urlParams.get('d');
+        const d = urlParams.get('d');
 
-        let postal = "";
-        let para = "";
-        let de = "";
-        let msg = "";
-        let estampilla = "";
-
-        // DECODIFICACIÓN SEGURA DEL PAYLOAD BASE64
-        if (payloadData) {
+        if (d) {
             try {
-                const jsonString = decodeURIComponent(escape(atob(payloadData)));
-                const datos = JSON.parse(jsonString);
-                
-                postal = datos.postal;
-                para = datos.para;
-                de = datos.de;
-                msg = datos.msg;
-                estampilla = datos.estampilla || '';
-            } catch (e) {
-                console.error("Error procesando payload encriptado:", e);
+                const datos = JSON.parse(decodeURIComponent(escape(atob(d))));
+
+                if (datos.postal) {
+                    document.getElementById('postal-pantalla').src = 'imagenes/' + datos.postal + '.jpg';
+                }
+                if (datos.estampilla) {
+                    const est = document.getElementById('estampilla-overlay');
+                    est.src = 'imagenes/' + datos.estampilla + '.png';
+                    est.style.display = 'block';
+                }
+                if (datos.para) {
+                    document.getElementById('txt-para').innerText = datos.para;
+                }
+                if (datos.msg) {
+                    document.getElementById('txt-mensaje').innerText = '"' + datos.msg + '"';
+                }
+                if (datos.de) {
+                    document.getElementById('txt-firma').innerText = 'Con carino, ' + datos.de;
+                }
+            } catch(e) {
+                console.warn('No se pudo leer el payload:', e);
             }
         }
 
-        // SALVAVIDAS: Si el enlace viene directo por parámetros tradicionales
-        if (!postal) postal = urlParams.get('postal');
-        if (!para) para = urlParams.get('para');
-        if (!de) de = urlParams.get('de');
-        if (!msg) msg = urlParams.get('msg');
-
-        // Limpieza profunda de strings por si quedan residuos de comillas en la conversión JSON
-        if (postal) postal = postal.replace(/['"]+/g, '');
-        postalIdGlobal = postal || "postal1"; 
-
-        // Renderizar Textos en pantalla
-        if (para) document.getElementById('txt-para').innerText = decodeURIComponent(para).replace(/['"]+/g, '');
-        if (de) {
-            document.getElementById('bloque-de').innerText = 'De parte de ' + decodeURIComponent(de).replace(/['"]+/g, '') + ':';
-        } else {
-            document.getElementById('bloque-de').innerText = 'Mensaje especial para vos:';
-        }
-        if (msg) document.getElementById('txt-mensaje').innerText = '"' + decodeURIComponent(msg).replace(/['"]+/g, '') + '"';
-
-        
-        const imgEstampilla = document.getElementById('estampilla-pantalla');
-        if (estampilla) {
-            imgEstampilla.src = 'imagenes/' + estampilla + '.png';
-            imgEstampilla.style.display = 'block';
-        } else {
-            imgEstampilla.style.display = 'none';
-        }
-
-        // Renderizar la Postal seleccionada
-
-        const imgPostal = document.getElementById('postal-pantalla');
-        let rutaInicial = 'imagenes/' + postalIdGlobal + '.jpg';
-        imgPostal.src = rutaInicial;
-        document.getElementById('link-descargar').href = rutaInicial;
-
-        // CONTADOR DE VISITAS LOCALES
         let visitas = localStorage.getItem('contador_postal_viajes');
         visitas = visitas ? parseInt(visitas) + 1 : 1;
         localStorage.setItem('contador_postal_viajes', visitas);
-        document.getElementById('info-contador').innerText = '📍 Sos el viajero N° ' + visitas + ' en abrir esta postal en este dispositivo.';
+        document.getElementById('info-contador').innerText = 'Sos el viajero N ' + visitas + ' en abrir esta postal en este dispositivo.';
     };
-
-    // Si falla la extensión .jpg, el navegador salta a buscar el archivo en .png de inmediato
-    function corregirExtensionPostal(img) {
-        if (img.src.endsWith('.jpg')) {
-            let rutaPng = 'imagenes/' + postalIdGlobal + '.png';
-            img.src = rutaPng;
-            document.getElementById('link-descargar').href = rutaPng;
-        } else {
-            img.style.display = 'none';
-            document.getElementById('postal-placeholder').style.display = 'flex';
-            document.getElementById('postal-placeholder').innerText = "📮 Postal no disponible (" + postalIdGlobal + ")";
-        }
-    }
-
-    function compartirPostal() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'Te llegó una Postal Viajera',
-                text: 'Mirá la postal que te enviaron de La Chipa Viajera',
-                url: window.location.href
-            }).catch(console.error);
-        } else {
-            navigator.clipboard.writeText(window.location.href);
-            alert("¡Enlace copiado al portapapeles! Ya podés pegarlo en tus chats.");
-        }
-    }
 
     function irAInicio() {
         window.location.href = "index.html";
     }
-
-    /*
-    CORRECCIÓN IMPORTANTE:
-    Para que "Guardar Imagen" descargue postal + estampilla + mensaje,
-    reemplazar el enlace actual por una función con html2canvas que capture:
-    - postal-pantalla
-    - estampilla-pantalla
-    - nombre remitente
-    - mensaje
-    Actualmente este archivo ya corrige la estampilla dinámica.
-    */
-
 </script>
 
 </body>
