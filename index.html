@@ -708,7 +708,7 @@
         const { para, de, mensaje } = datos;
 
         const payload = armarPayload(para, de, mensaje);
-        window.location.href = 'ver.html?d=' + payload + '&origen=preview';
+        window.open('ver.html?d=' + payload + '&origen=preview', '_blank');
     }
 
     inicializar();

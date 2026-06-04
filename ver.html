@@ -14,66 +14,28 @@
         .postal-imagen { width: 100%; height: auto; display: block; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .estampilla-overlay {
             position: absolute;
-            top: 6.5%;
-            right: 5.5%;
-            width: 22%;
+            top: 3%;
+            right: 5%;
+            width: 23%;
             height: auto;
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.35));
             pointer-events: none;
         }
 
         /* RECUADRO DE / PARA */
-        .recuadro-de-para {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        .recuadro-de-para .campo {
-            flex: 1;
-            background: #faf8f0;
-            border: 1.5px solid #e5c97e;
-            border-radius: 10px;
-            padding: 10px 14px;
-            text-align: left;
-        }
-        .recuadro-de-para .campo .etiq {
-            font-size: 10px;
-            font-weight: bold;
-            color: #b45309;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 3px;
-        }
-        .recuadro-de-para .campo .valor {
-            font-size: 16px;
-            font-weight: bold;
-            color: #222;
-        }
+        .recuadro-de-para { display: flex; gap: 10px; margin-bottom: 18px; }
+        .recuadro-de-para .campo { flex: 1; background: #faf8f0; border: 1.5px solid #e5c97e; border-radius: 10px; padding: 10px 14px; text-align: left; }
+        .recuadro-de-para .campo .etiq { font-size: 10px; font-weight: bold; color: #b45309; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .recuadro-de-para .campo .valor { font-size: 16px; font-weight: bold; color: #222; }
 
         /* CARTA DEDICATORIA */
         .carta-dedicatoria { background: #faf8f0; border-left: 5px solid #d97706; padding: 20px; border-radius: 0 10px 10px 0; text-align: left; margin-bottom: 20px; }
         .carta-dedicatoria .etiqueta { font-size: 11px; color: #999; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .carta-dedicatoria p.mensaje { font-style: italic; font-size: 16px; line-height: 1.6; color: #444; margin: 0; background: white; border-radius: 8px; padding: 12px 15px; border: 1px dashed #e5c97e; }
 
-        /* BOTON DESCARGAR */
-        .btn-descargar {
-            width: 100%;
-            padding: 14px;
-            background-color: #16a34a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
-            display: block;
-            text-align: center;
-        }
+        /* BOTONES */
+        .btn-descargar { width: 100%; padding: 14px; background-color: #16a34a; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 10px; display: block; text-align: center; text-decoration: none; }
         .btn-descargar:hover { background-color: #15803d; }
-
-        /* BOTON CREAR */
         button.btn-crear { width: 100%; padding: 14px; background-color: #d97706; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 15px; }
         button.btn-crear:hover { background-color: #b45309; }
 
@@ -87,28 +49,22 @@
         .btn-jugar { display: block; width: 100%; padding: 9px; background: #7c3aed; color: white; border: none; border-radius: 7px; font-size: 13px; font-weight: bold; text-decoration: none; text-align: center; cursor: pointer; }
         .btn-jugar:hover { background: #6d28d9; }
 
-        /* BOTON INSTAGRAM */
+        /* INSTAGRAM */
         .btn-instagram { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; text-decoration: none; box-sizing: border-box; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
         .btn-instagram:hover { opacity: 0.9; }
 
-        /* CONTADOR */
         .contador-visitas { font-size: 12px; color: #888; font-style: italic; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
-
-        /* CANVAS OCULTO para generacion */
         #canvas-descarga { display: none; }
     </style>
 </head>
 <body>
-
 <div class="container">
 
-    <!-- POSTAL + ESTAMPILLA -->
     <div class="postal-wrap" id="postal-wrap">
         <img id="postal-pantalla" src="" class="postal-imagen" alt="Postal de viaje" crossorigin="anonymous">
         <img id="estampilla-overlay" src="" class="estampilla-overlay" alt="Estampilla" style="display:none" crossorigin="anonymous">
     </div>
 
-    <!-- RECUADRO DE / PARA -->
     <div class="recuadro-de-para" id="recuadro-de-para" style="display:none">
         <div class="campo">
             <div class="etiq">Para</div>
@@ -120,21 +76,17 @@
         </div>
     </div>
 
-    <!-- CARTA DEDICATORIA -->
     <div class="carta-dedicatoria">
         <div class="etiqueta">Mensaje especial para vos:</div>
         <p class="mensaje" id="txt-mensaje">Te enviaron un saludo especial desde el recorrido de La Chipa Viajera.</p>
     </div>
 
-    <!-- BOTON DESCARGAR -->
     <button class="btn-descargar" id="btn-descargar" onclick="descargarPostal()" style="display:none">
         Descargar postal con estampilla
     </button>
 
-    <!-- BOTON CREAR POSTAL -->
     <button class="btn-crear" onclick="irAInicio()">Crear mi propia postal gratis</button>
 
-    <!-- TARJETA VIDEOJUEGO -->
     <div class="tarjeta-promo">
         <img src="imagenes/publi_juego_chipa.jpg" alt="La Chipa Viajera Videojuego"
              onerror="this.src='https://placehold.co/85x105/7c3aed/white?text=Juego'">
@@ -142,21 +94,15 @@
             <h3>La Chipa Viajera</h3>
             <span class="tarjeta-promo-badge">VIDEO JUEGO</span>
             <p>Juga el apasionante juego de la Chipa Viajera e intenta ser el mejor del mundo sumando la mayor cantidad de puntos.</p>
-            <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="btn-jugar">
-                Jugar ahora gratis
-            </a>
+            <a href="https://juanterere.github.io/Escape-de-la-Chipa-Viajera/" target="_blank" class="btn-jugar">Jugar ahora gratis</a>
         </div>
     </div>
 
-    <!-- BOTON INSTAGRAM -->
     <a href="https://www.instagram.com/juanterere/?hl=es" target="_blank" class="btn-instagram">
         Seguir a Juan Terere en Instagram
     </a>
 
-    <div class="contador-visitas" id="info-contador">
-        Cargando estadisticas de viaje...
-    </div>
-
+    <div class="contador-visitas" id="info-contador">Cargando estadisticas de viaje...</div>
 </div>
 
 <canvas id="canvas-descarga"></canvas>
@@ -165,44 +111,35 @@
     var datosPostal = {};
 
     window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const d = urlParams.get('d');
+        var urlParams = new URLSearchParams(window.location.search);
+        var d = urlParams.get('d');
 
         if (d) {
             try {
                 datosPostal = JSON.parse(decodeURIComponent(escape(atob(d))));
 
-                // POSTAL
                 if (datosPostal.postal) {
                     document.getElementById('postal-pantalla').src = 'imagenes/' + datosPostal.postal + '.jpg';
                 }
-
-                // ESTAMPILLA
                 if (datosPostal.estampilla) {
                     var est = document.getElementById('estampilla-overlay');
                     est.src = 'imagenes/' + datosPostal.estampilla + '.png';
                     est.style.display = 'block';
                     document.getElementById('btn-descargar').style.display = 'block';
                 }
-
-                // RECUADRO DE / PARA
                 if (datosPostal.para || datosPostal.de) {
                     document.getElementById('recuadro-de-para').style.display = 'flex';
                     if (datosPostal.para) document.getElementById('label-para').innerText = datosPostal.para;
                     if (datosPostal.de)   document.getElementById('label-de').innerText   = datosPostal.de;
                 }
-
-                // MENSAJE
                 if (datosPostal.msg) {
                     document.getElementById('txt-mensaje').innerText = '"' + datosPostal.msg + '"';
                 }
-
             } catch(e) {
                 console.warn('No se pudo leer el payload:', e);
             }
         }
 
-        // CONTADOR
         var visitas = localStorage.getItem('contador_postal_viajes');
         visitas = visitas ? parseInt(visitas) + 1 : 1;
         localStorage.setItem('contador_postal_viajes', visitas);
@@ -210,58 +147,98 @@
     };
 
     function descargarPostal() {
-        var imgPostal     = document.getElementById('postal-pantalla');
-        var imgEstampilla = document.getElementById('estampilla-overlay');
-        var canvas        = document.getElementById('canvas-descarga');
-        var ctx           = canvas.getContext('2d');
+        var imgPostal = document.getElementById('postal-pantalla');
+        var canvas    = document.getElementById('canvas-descarga');
+        var ctx       = canvas.getContext('2d');
 
-        var w = imgPostal.naturalWidth;
-        var h = imgPostal.naturalHeight;
-        canvas.width  = w;
-        canvas.height = h;
+        var W = imgPostal.naturalWidth  || 800;
+        var H = imgPostal.naturalHeight || 1200;
 
-        var postalCargada = new Image();
-        postalCargada.crossOrigin = 'anonymous';
-        postalCargada.onload = function() {
-            ctx.drawImage(postalCargada, 0, 0, w, h);
+        // Barra inferior: 8% de la altura total
+        var barH  = Math.round(H * 0.08);
+        var totalH = H + barH;
 
+        canvas.width  = W;
+        canvas.height = totalH;
+
+        var postalImg = new Image();
+        postalImg.crossOrigin = 'anonymous';
+        postalImg.onload = function() {
+            // 1 — Dibujar postal
+            ctx.drawImage(postalImg, 0, 0, W, H);
+
+            // 2 — Barra inferior dorada
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(0, H, W, barH);
+
+            // 3 — Textos De / Para en la barra
+            var fontSize = Math.round(barH * 0.28);
+            var labelSize = Math.round(barH * 0.22);
+            var padX = Math.round(W * 0.04);
+            var midY = H + barH / 2;
+
+            // "De" (izquierda)
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.font = 'bold ' + labelSize + 'px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('De', padX, midY - fontSize * 0.3);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold ' + fontSize + 'px Arial';
+            ctx.fillText(datosPostal.de || '', padX, midY + fontSize * 0.6);
+
+            // Titulo central
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.font = (labelSize * 0.9) + 'px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('La Chipa Viajera', W / 2, midY + fontSize * 0.2);
+
+            // "Para" (derecha)
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.font = 'bold ' + labelSize + 'px Arial';
+            ctx.textAlign = 'right';
+            ctx.fillText('Para', W - padX, midY - fontSize * 0.3);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold ' + fontSize + 'px Arial';
+            ctx.fillText(datosPostal.para || '', W - padX, midY + fontSize * 0.6);
+
+            // 4 — Estampilla
             if (datosPostal.estampilla) {
-                var estCargada = new Image();
-                estCargada.crossOrigin = 'anonymous';
-                estCargada.onload = function() {
-                    // estampilla al 22% del ancho, en top 6.5% right 5.5%
-                    var estW = w * 0.22;
-                    var estH = estCargada.naturalHeight * (estW / estCargada.naturalWidth);
-                    var estX = w - estW - (w * 0.055);
-                    var estY = h * 0.065;
-                    ctx.drawImage(estCargada, estX, estY, estW, estH);
-                    dispargarDescarga(canvas);
+                var estImg = new Image();
+                estImg.crossOrigin = 'anonymous';
+                estImg.onload = function() {
+                    var estW = W * 0.23;
+                    var estH = estImg.naturalHeight * (estW / estImg.naturalWidth);
+                    var estX = W - estW - (W * 0.05);
+                    var estY = H * 0.03;
+                    ctx.drawImage(estImg, estX, estY, estW, estH);
+                    triggerDownload(canvas);
                 };
-                estCargada.onerror = function() { dispargarDescarga(canvas); };
-                estCargada.src = imgEstampilla.src;
+                estImg.onerror = function() { triggerDownload(canvas); };
+                estImg.src = document.getElementById('estampilla-overlay').src;
             } else {
-                dispargarDescarga(canvas);
+                triggerDownload(canvas);
             }
         };
-        postalCargada.onerror = function() { alert('No se pudo generar la imagen. Intentá guardarla manualmente con una captura de pantalla.'); };
-        postalCargada.src = imgPostal.src;
+        postalImg.onerror = function() {
+            alert('No se pudo generar la imagen. Guarda la postal con una captura de pantalla.');
+        };
+        postalImg.src = imgPostal.src;
     }
 
-    function dispargarDescarga(canvas) {
+    function triggerDownload(canvas) {
         try {
             var link = document.createElement('a');
             link.download = 'postal_chipa_viajera.jpg';
             link.href = canvas.toDataURL('image/jpeg', 0.92);
             link.click();
         } catch(e) {
-            alert('Para guardar la postal, presiona y mantene la imagen, luego elegí "Guardar imagen".');
+            alert('Para guardar la postal, presiona y mantene la imagen y elegí "Guardar imagen".');
         }
     }
 
     function irAInicio() {
-        window.location.href = "index.html";
+        window.location.href = 'index.html';
     }
 </script>
-
 </body>
 </html>
