@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Chipa Viajera - Postales y Biblioteca Digital</title>
 
+    <!-- Etiquetas Open Graph para la vista previa de WhatsApp -->
     <meta property="og:title" content="La Chipa Viajera - ¡Te enviaron una postal!">
     <meta property="og:description" content="Recibiste una postal personalizada. Entrá para ver la dedicatoria y viajar con la Chipa Viajera.">
     <meta property="og:image" content="https://juanterere.github.io/chipa-viajera/imagenes/portadapotales.jpg">
@@ -416,29 +417,35 @@
             </div>
         </div>
 
+        <!-- NUEVA SECCIÓN DEL JUEGO AGREGADA AQUÍ -->
         <div id="seccion-juego" style="margin-top:32px">
-            <h3 class="seccion-titulo">Juego · La Chipa Viajera</h3>
+            <h3 class="seccion-titulo">Juego Interactivo</h3>
             <div class="tarjeta-libro animar">
                 <img src="imagenes/publi_juego_chipa.jpg" alt="Juego La Chipa Viajera" class="libro-portada" 
                      onerror="this.src='https://placehold.co/120x160/fdf6e3/d97706?text=Juego'">
                 <div class="libro-info">
-                    <h4>¡Jugá el Juego de la Chipa Viajera!</h4>
-                    <p class="libro-desc">Viví una aventura interactiva y descubrí los misterios que nuestra chipa tiene preparados.</p>
+                    <h4>Juega el Juego de la Chipa Viajera</h4>
+                    <p class="libro-desc">¡Acompañá a la Chipa Viajera en esta divertida aventura interactiva!</p>
                     <a href="#" class="btn-descargar-libro">
-                        🎮 ¡Jugar Ahora!
+                        🎮 Jugar Ahora
                     </a>
                 </div>
             </div>
         </div>
+        <!-- FIN DE LA NUEVA SECCIÓN -->
+
     </div>
 
     <div id="bloque-personalizar" class="oculto">
         <button type="button" class="btn-volver" onclick="volverAlCatalogo()">⬅️ Cambiar de diseño</button>
+
         <div class="postal-preview-wrap">
             <img id="vista-postal-grande" src="" class="postal-en-grande" alt="Postal Seleccionada">
             <img id="estampilla-preview" src="" class="estampilla-sobre-postal oculto" alt="Estampilla">
         </div>
+
         <h3 class="seccion-titulo">Paso 3 · Personalizá tu dedicatoria</h3>
+
         <div class="campo-grupo">
             <label for="nombre-para">¿Para quién es la postal?</label>
             <input type="text" id="nombre-para" placeholder="Ej: Matías">
@@ -451,20 +458,258 @@
             <label for="mensaje-dedicatoria">Tu mensaje</label>
             <textarea id="mensaje-dedicatoria" rows="3" placeholder="Ej: ¡Te mando un abrazo desde París! Que la Chipa Viajera reviva el amor a nuestra patria"></textarea>
         </div>
+
         <h3 class="seccion-titulo" style="margin-top:18px">Paso 4 · Elegí tu estampilla</h3>
         <div class="galeria-estampillas" id="galeria-estampillas"></div>
+
         <h3 class="seccion-titulo" style="margin-top:18px">Paso 5 · Enviá tu postal</h3>
         <button type="button" class="btn-whatsapp" onclick="enviarPorWhatsApp()">🚀 Enviar por WhatsApp</button>
         <button type="button" class="btn-email" onclick="enviarPorEmail()">📧 Enviar por Correo</button>
         <button type="button" class="btn-preview" onclick="probarVista()">👁️ Ver cómo queda antes de enviar</button>
     </div>
+
 </div>
 
 <script>
-    // ... [Tu script original de inicialización y funciones se mantiene idéntico aquí] ...
     const URL_BASE = "https://juanterere.github.io/chipa-viajera";
-    // ... (copiar el resto del script que ya tenías en tu archivo original) ...
-    // Asegúrate de incluir desde "const albumesPaises = {..." hasta el cierre de la etiqueta </script>
+
+    const albumesPaises = {
+        paraguay: {
+            bandera: "🇵🇾", nombre: "Paraguay",
+            postales: [{ id: "py_asuncion_costanera", lugar: "Asunción · Costanera" },
+                { id: "py_encarnacion_playa", lugar: "Encarnación · Playa" }
+            ]
+        },
+        festivos: {
+            bandera: "🎉", nombre: "Días Festivos",
+            postales: [
+                { id: "diadelpadre_primera", lugar: "Día del Padre" },
+                { id: "festivo_dia_madre",   lugar: "Día de la Madre" },
+                { id: "festivo_dia_hijo",    lugar: "Día del Niño" },
+                { id: "festivo_dia_terere",  lugar: "Día del Tereré" }
+            ]
+        },
+        francia: {
+            bandera: "🇫🇷", nombre: "Francia",
+            postales: [
+                { id: "fr_paris_torre",     lugar: "París · Torre Eiffel" },
+                { id: "fr_paris_louvre",    lugar: "París · Museo del Louvre" },
+                { id: "fr_paris_concordia", lugar: "París · Plaza de la Concordia" },
+            ]
+        },
+        espana: {
+            bandera: "🇪🇸", nombre: "España",
+            postales: [
+                { id: "es_madrid_plazamayor",  lugar: "Madrid · Plaza Mayor" },
+                { id: "es_barcelona_sagrada",  lugar: "Barcelona · Sagrada Familia" },
+            ]
+        },
+        brasil: {
+            bandera: "🇧🇷", nombre: "Brasil",
+            postales: [
+                { id: "Br_Recife_Centro", lugar: "Recife · Centro" }
+            ]
+        },
+        dominicana: {
+            bandera: "🇩🇴", nombre: "República Dominicana",
+            postales: [
+                { id: "rd_santodomingo_alcazardecolon", lugar: "Santo Domingo · Alcázar de Colón" }
+            ]
+        }
+    };
+
+    const estampillas = [
+        { id: "Estampilla Azul", nombre: "Azul" },
+        { id: "Estampilla Mundial2026", nombre: "Mundial 2026" },
+        { id: "Estampilla Tatakua", nombre: "Tatakua" }
+    ];
+
+    let paisActivo          = "";
+    let postalSeleccionada  = "";
+    let estampillaActual    = "";
+
+    function inicializar() {
+        const menuPaises = document.getElementById('menu-paises');
+        Object.keys(albumesPaises).forEach(clave => {
+            const pais = albumesPaises[clave];
+            const btn = document.createElement('button');
+            btn.type = "button";
+            btn.className = "btn-pais";
+            btn.id = "pais-" + clave;
+            btn.innerHTML = pais.bandera + " " + pais.nombre;
+            btn.onclick = () => cargarAlbumPais(clave);
+            menuPaises.appendChild(btn);
+        });
+
+        const galeriaEst = document.getElementById('galeria-estampillas');
+        estampillas.forEach(est => {
+            const div = document.createElement('div');
+            div.className = "tarjeta-estampilla";
+            div.id = "est-" + est.id;
+            const rutaImg = "imagenes/" + est.id + ".png";
+            div.innerHTML = '<img src="' + rutaImg + '" alt="' + est.nombre + '" onerror="this.style.display=\'none\'"><span>' + est.nombre + '</span>';
+            div.onclick = () => seleccionarEstampilla(est.id);
+            galeriaEst.appendChild(div);
+        });
+    }
+
+    function actualizarPasos(pasoActivo) {
+        for (let i = 1; i <= 5; i++) {
+            const el = document.getElementById('paso' + i);
+            el.classList.remove('activo', 'completo');
+            if (i < pasoActivo)  el.classList.add('completo');
+            if (i === pasoActivo) el.classList.add('activo');
+        }
+    }
+
+    function cargarAlbumPais(clave) {
+        paisActivo = clave;
+        postalSeleccionada = "";
+
+        document.querySelectorAll('.btn-pais').forEach(btn => btn.classList.remove('activo'));
+        document.getElementById("pais-" + clave).classList.add('activo');
+
+        const contenedor = document.getElementById('contenedor-postales');
+        contenedor.innerHTML = "";
+        const pais = albumesPaises[clave];
+
+        pais.postales.forEach(postal => {
+            const rutaImgBase = "imagenes/" + postal.id;
+            const placeholder = "https://placehold.co/500x320/f4edd2/d97706?text=" + encodeURIComponent(postal.lugar);
+            
+            const div = document.createElement('div');
+            div.className = "tarjeta-postal animar";
+            
+            div.innerHTML = `
+                <img src="${rutaImgBase}.jpg" alt="${postal.lugar}" 
+                     onerror="if(this.src.indexOf('.jpg') !== -1) { this.src='${rutaImgBase}.png'; } else if (this.src.indexOf('.png') !== -1) { this.src='${rutaImgBase}.jpeg'; } else { this.src='${placeholder}'; }">
+                <p>${postal.lugar}</p>
+            `;
+            div.onclick = () => seleccionarPostal(postal.id, rutaImgBase + '.jpg', placeholder, postal.lugar);
+            contenedor.appendChild(div);
+        });
+
+        document.getElementById('seccion-album').classList.remove('oculto');
+        actualizarPasos(2);
+    }
+
+    function seleccionarPostal(idPostal, rutaImg, placeholder, nombreLugar) {
+        postalSeleccionada = idPostal;
+
+        const imgGrande = document.getElementById('vista-postal-grande');
+        imgGrande.src = rutaImg;
+        imgGrande.alt = nombreLugar;
+        
+        imgGrande.onerror = function() { 
+            if(this.src.indexOf('.jpg') !== -1) { 
+                this.src = this.src.replace('.jpg', '.png'); 
+            } else { 
+                this.src = placeholder; 
+            } 
+        };
+
+        document.getElementById('bloque-seleccion').classList.add('oculto');
+        document.getElementById('bloque-personalizar').classList.remove('oculto');
+        document.getElementById('bloque-personalizar').classList.add('animar');
+
+        actualizarPasos(3);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function seleccionarEstampilla(idEst) {
+        estampillaActual = idEst;
+
+        document.querySelectorAll('.tarjeta-estampilla').forEach(t => t.classList.remove('activa'));
+        document.getElementById("est-" + idEst).classList.add('activa');
+
+        const imgEst = document.getElementById('estampilla-preview');
+        imgEst.src = "imagenes/" + idEst + ".png";
+        imgEst.classList.remove('oculto');
+
+        actualizarPasos(4);
+    }
+
+    function volverAlCatalogo() {
+        document.getElementById('bloque-personalizar').classList.add('oculto');
+        document.getElementById('bloque-seleccion').classList.remove('oculto');
+        actualizarPasos(paisActivo ? 2 : 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function obtenerDatosFormulario() {
+        const para    = document.getElementById('nombre-para').value.trim();
+        const de      = document.getElementById('nombre-de').value.trim();
+        const mensaje = document.getElementById('mensaje-dedicatoria').value.trim();
+
+        if (!postalSeleccionada) { alert("¡Seleccioná una postal primero!"); return null; }
+        if (!para)   { alert("¡Escribí el nombre de quien recibe la postal!"); return null; }
+        if (!mensaje){ alert("¡Escribí tu mensaje o dedicatoria!"); return null; }
+
+        return { para, de, mensaje };
+    }
+
+    function armarPayload(para, de, mensaje) {
+        return btoa(unescape(encodeURIComponent(JSON.stringify({
+            postal:     postalSeleccionada,
+            estampilla: estampillaActual,
+            para:       para,
+            de:         de,
+            msg:        mensaje
+        }))));
+    }
+
+    function enviarPorWhatsApp() {
+        const datos = obtenerDatosFormulario();
+        if (!datos) return;
+        const { para, de, mensaje } = datos;
+
+        const payload    = armarPayload(para, de, mensaje);
+        const urlPostal  = URL_BASE + '/ver.html?d=' + payload;
+
+        const deTexto = de ? de : '';
+        const textoWA =
+            'La Chipa Viajera te envió una postal!%0A%0A' +
+            '*' + para + '*, con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!%0A%0A' +
+            '"' + encodeURIComponent(mensaje) + '"%0A%0A' +
+            'Con cariño, *' + deTexto + '*%0A%0A' +
+            'Mirá tu postal acá:%0A' + encodeURIComponent(urlPostal);
+
+        actualizarPasos(5);
+        window.open('https://wa.me/?text=' + textoWA, '_blank');
+    }
+
+    function enviarPorEmail() {
+        const datos = obtenerDatosFormulario();
+        if (!datos) return;
+        const { para, de, mensaje } = datos;
+
+        const payload    = armarPayload(para, de, mensaje);
+        const urlPostal  = URL_BASE + '/ver.html?d=' + payload;
+
+        const asunto = encodeURIComponent('La Chipa Viajera te envió una postal!');
+        const deTexto = de ? de : '';
+        const cuerpoEmail = encodeURIComponent(
+            'La Chipa Viajera te envió una postal!\n\n' +
+            para + ', con la Chipa Viajera te enviamos esta hermosa postal, ¡esperamos que la disfrutes!\n\n' +
+            '"' + mensaje + '"\n\n' +
+            'Con cariño, ' + deTexto + '\n\n' +
+            'Mirá tu postal acá:\n' + urlPostal
+        );
+
+        actualizarPasos(5);
+        window.open('mailto:?subject=' + asunto + '&body=' + cuerpoEmail, '_self');
+    }
+
+    function probarVista() {
+        const datos = obtenerDatosFormulario();
+        if (!datos) return;
+        const { para, de, mensaje } = datos;
+
+        const payload = armarPayload(para, de, mensaje);
+        window.location.href = 'ver.html?d=' + payload + '&origen=preview';
+    }
+
+    inicializar();
 </script>
 </body>
 </html>
